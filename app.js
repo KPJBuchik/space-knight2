@@ -164,31 +164,6 @@ function updateGameArea() {
 
 
     }
-    // for (i = 0; i < enemiesRight.length; i += 1) {
-    //     if (myGamePiece.collision(enemiesRight[i])) {
-    //         myGamePiece.image.src = "explosion.png";
-
-    //         myGameArea.stop();
-
-    //         return;
-    //     }
-    //     if (torpedoe.collision(enemiesRight[i])) {
-    //         enemiesRight[i].image.src = "explosion.png";
-    //         newEnemies = enemiesRight[i]
-    //         setTimeout(function () {
-    //             score++;
-    //             console.log("direct hit");
-
-    //             document.getElementById("show-score").innerHTML = score;
-    //             newEnemies.height = 0;
-    //             newEnemies.width = 0;   
-
-    //         }, 200);
-
-
-
-    //     }
-    // }
 
 
     if (myGameArea.key && myGameArea.key == 37) { myGamePiece.speedX = -4; };
@@ -250,10 +225,10 @@ function updateGameArea() {
 
         myGamePiece.newPos();
         myGamePiece.update();
-
+        letsTryThis()
     }
+    function letsTryThis(){
     if (myGameArea.frameNo == 1 || everyinterval(70 - score)) {
-        // myGameArea.begin();
 
         y = myGameArea.canvas.height;
         x = myGameArea.canvas.height;
@@ -304,6 +279,7 @@ function updateGameArea() {
     //     if (score == 2) {
     // myGameArea.begin()    }
 
+}
 }
 
 function everyinterval(n) {

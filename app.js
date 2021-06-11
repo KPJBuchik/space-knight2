@@ -10,8 +10,10 @@ let bullets = 0;
 let score = 0;
 let newEnemies;
 //generate all game pieces that are not randomly generated 
-
-function startGame() {
+window.onload = function() {
+startGame();
+}
+    function startGame() {
     // audioObj = new Audio("assets/theme.m4a");
     // audioObj.addEventListener("canplaythrough", event => {
     //     event.preventDefault();
@@ -21,7 +23,10 @@ function startGame() {
     myGamePiece = new component(15, 20, "spaceship.png", 150, 240, "image");
     torpedoe = new component(5, 5, "bullet.png", 150, 240, "image");
     obstacle = new component(100, 20, "green", 380, -40, "color");
-    powerUp = new component(20, 20, "blue",250, -90, "color"  )
+    powerUp = new component(20, 20, "blue", 250, -90, "color");
+    let mathRandom = Math.random() * 480 - 0
+    enemies.push(new component(30, 30, "enemy.png", mathRandom, 0, "image"));
+
     myGameArea.begin();
 }
 //game area, canvas context, and mechanism for arrow key movement
@@ -30,7 +35,7 @@ let myGameArea = {
     begin: function () {
         this.canvas.width = 480;
         this.canvas.height = 270;
-        score=0;
+        score = 0;
         document.getElementById("show-score").innerHTML = score;
 
         this.context = this.canvas.getContext("2d");
@@ -39,7 +44,7 @@ let myGameArea = {
         document.body.insertBefore(this.canvas, document.body.childNodes[0]);
 
         this.interval = setInterval(updateGameArea, 20);
-  
+
 
         window.addEventListener('keydown', function (e) {
             myGameArea.key = e.keyCode;
@@ -125,7 +130,7 @@ function component(width, height, source, x, y, type) {
 
 //game events
 function updateGameArea() {
-    var x,y, height, minHeight, maxHeight;
+    var x, y, height, minHeight, maxHeight;
     for (i = 0; i < obstacles.length; i++) {
         if (myGamePiece.collision(obstacles[i])) {
 
@@ -143,7 +148,7 @@ function updateGameArea() {
             myGamePiece.update();
             myGameArea.stop();
             console.log("collision");
-            return         
+            return
 
         };
         if (torpedoe.collision(enemies[i])) {
@@ -155,7 +160,7 @@ function updateGameArea() {
 
                 document.getElementById("show-score").innerHTML = score;
                 newEnemies.height = 0;
-                newEnemies.width = 0;   
+                newEnemies.width = 0;
 
             }, 200);
 
@@ -235,9 +240,10 @@ function updateGameArea() {
         torpedoe.width = 5
         torpedoe.update()
 
-        setTimeout(function () { torpedoe.y = myGamePiece.y 
+        setTimeout(function () {
+            torpedoe.y = myGamePiece.y
             torpedoe.x = myGamePiece.x;
-}, 200);
+        }, 200);
 
     }
 
@@ -251,6 +257,7 @@ function updateGameArea() {
 
     }
     if (myGameArea.frameNo == 1 || everyinterval(70 - score)) {
+        
         y = myGameArea.canvas.height;
         x = myGameArea.canvas.height;
 

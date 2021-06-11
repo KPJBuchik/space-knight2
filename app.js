@@ -4,8 +4,6 @@ let torpedoe;
 let obstacle;
 let enemyShip;
 let enemies = [];
-let enemiesRight = [];
-let enemiesCenter = [];
 let obstacles = [];
 let bullets = 0;
 let score = 0;
@@ -128,6 +126,33 @@ function component(width, height, source, x, y, type) {
 //game events
 function updateGameArea() {
     var x, y, height, minHeight, maxHeight;
+
+
+
+    if (myGameArea.key && myGameArea.key == 37) { myGamePiece.speedX = -4; };
+    if (myGameArea.key && myGameArea.key == 39) { myGamePiece.speedX = 4; };
+    if (myGameArea.key && myGameArea.key == 38) { myGamePiece.speedY = -4; };
+    if (myGameArea.key && myGameArea.key == 40) { myGamePiece.speedY = 4; };
+
+
+    myGameArea.clear();
+
+    myGameArea.frameNo += 1;
+
+
+    myGamePiece.newPos();
+    myGamePiece.update();
+
+
+    torpedoe.x = myGamePiece.x;
+    // torpedoe.y = myGamePiece.y;
+    myGamePiece.update();
+
+    torpedoe.update();
+
+    torpedoe.width = 2;
+    myGamePiece.speedX = 0;
+    myGamePiece.speedY = 0;
     for (i = 0; i < obstacles.length; i++) {
         if (myGamePiece.collision(obstacles[i])) {
 
@@ -138,6 +163,7 @@ function updateGameArea() {
         }
     }
     for (i = 0; i < enemies.length; i++) {
+
         if (myGamePiece.collision(enemies[i])) {
 
             myGamePiece.image.src = "explosion.png";
@@ -165,57 +191,8 @@ function updateGameArea() {
 
 
     }
-    // for (i = 0; i < enemiesRight.length; i += 1) {
-    //     if (myGamePiece.collision(enemiesRight[i])) {
-    //         myGamePiece.image.src = "explosion.png";
+  
 
-    //         myGameArea.stop();
-
-    //         return;
-    //     }
-    //     if (torpedoe.collision(enemiesRight[i])) {
-    //         enemiesRight[i].image.src = "explosion.png";
-    //         newEnemies = enemiesRight[i]
-    //         setTimeout(function () {
-    //             score++;
-    //             console.log("direct hit");
-
-    //             document.getElementById("show-score").innerHTML = score;
-    //             newEnemies.height = 0;
-    //             newEnemies.width = 0;   
-
-    //         }, 200);
-
-
-
-    //     }
-    // }
-
-
-    if (myGameArea.key && myGameArea.key == 37) { myGamePiece.speedX = -4; };
-    if (myGameArea.key && myGameArea.key == 39) { myGamePiece.speedX = 4; };
-    if (myGameArea.key && myGameArea.key == 38) { myGamePiece.speedY = -4; };
-    if (myGameArea.key && myGameArea.key == 40) { myGamePiece.speedY = 4; };
-
-
-    myGameArea.clear();
-
-    myGameArea.frameNo += 1;
-
-
-    myGamePiece.newPos();
-    myGamePiece.update();
-
-
-    torpedoe.x = myGamePiece.x;
-    // torpedoe.y = myGamePiece.y;
-    myGamePiece.update();
-
-    torpedoe.update();
-
-    torpedoe.width = 2;
-    myGamePiece.speedX = 0;
-    myGamePiece.speedY = 0;
 
     if (obstacle.collision(myGamePiece)) {
         myGamePiece.image.src = "explosion.png";
@@ -265,6 +242,7 @@ function updateGameArea() {
         // width = Math.floor(Math.random() * (maxHeight - minHeight + 1) + minHeight);
         let mathRandom = Math.random() * 480 - 0
         enemies.push(new component(30, 30, "enemy.png", mathRandom, 0, "image"));
+        enemies.update();
         // enemiesRight.push(new component(30, 30, "enemy.png", mathRandom, 0, "image"));
 
     }
@@ -278,7 +256,7 @@ function updateGameArea() {
         let mathRandom = Math.random() * 480 - 0
 
         obstacles.push(new component(100, 20, "red", mathRandom, 0));
-
+        obstacles.update();
 
     }
 

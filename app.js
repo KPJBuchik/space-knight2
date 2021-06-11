@@ -22,7 +22,7 @@ function startGame() {
     myGamePiece = new component(15, 20, "spaceship.png", 150, 240, "image");
     torpedoe = new component(5, 5, "bullet.png", 150, 240, "image");
     obstacle = new component(100, 20, "green", 380, -40);
-
+    enemyShip = new component(100, 20,"enemy.png",300,-40)
 }
 //game area, canvas context, and mechanism for arrow key movement
 let myGameArea = {
@@ -126,7 +126,69 @@ function component(width, height, source, x, y, type) {
 //game events
 function updateGameArea() {
     var x, y, height, minHeight, maxHeight;
+    for (i = 0; i < obstacles.length; i++) {
+        if (myGamePiece.collision(obstacles[i])) {
 
+            myGamePiece.image.src = "explosion.png";
+            myGamePiece.update();
+            myGameArea.stop();
+            console.log("collision");
+        }
+    }
+    for (i = 0; i < enemies.length; i++) {
+
+        if (myGamePiece.collision(enemies[i])) {
+
+            myGamePiece.image.src = "explosion.png";
+            myGamePiece.newPos();
+            myGamePiece.update();
+            myGameArea.stop();
+            console.log("collision");
+            return
+
+        };
+        if (torpedoe.collision(enemies[i])) {
+            enemies[i].image.src = "explosion.png";
+            newEnemies = enemies[i]
+            setTimeout(function () {
+                score++;
+                console.log("direct hit");
+
+                document.getElementById("show-score").innerHTML = score;
+                newEnemies.height = 0;
+                newEnemies.width = 0;
+
+            }, 200);
+
+        };
+
+
+    }
+    // for (i = 0; i < enemiesRight.length; i += 1) {
+    //     if (myGamePiece.collision(enemiesRight[i])) {
+    //         myGamePiece.image.src = "explosion.png";
+
+    //         myGameArea.stop();
+
+    //         return;
+    //     }
+    //     if (torpedoe.collision(enemiesRight[i])) {
+    //         enemiesRight[i].image.src = "explosion.png";
+    //         newEnemies = enemiesRight[i]
+    //         setTimeout(function () {
+    //             score++;
+    //             console.log("direct hit");
+
+    //             document.getElementById("show-score").innerHTML = score;
+    //             newEnemies.height = 0;
+    //             newEnemies.width = 0;   
+
+    //         }, 200);
+
+
+
+    //     }
+    // }
 
 
     if (myGameArea.key && myGameArea.key == 37) { myGamePiece.speedX = -4; };
@@ -153,45 +215,9 @@ function updateGameArea() {
     torpedoe.width = 2;
     myGamePiece.speedX = 0;
     myGamePiece.speedY = 0;
-    for (i = 0; i < obstacles.length; i++) {
-        if (myGamePiece.collision(obstacles[i])) {
-
-            myGamePiece.update();
-            myGameArea.stop();
-            console.log("collision");
-        }
-    }
-    for (i = 0; i < enemies.length; i++) {
-
-        if (myGamePiece.collision(enemies[i])) {
-
-            myGamePiece.newPos();
-            myGamePiece.update();
-            myGameArea.stop();
-            console.log("collision");
-            return
-
-        };
-        if (torpedoe.collision(enemies[i])) {
-            newEnemies = enemies[i]
-            setTimeout(function () {
-                score++;
-                console.log("direct hit");
-
-                document.getElementById("show-score").innerHTML = score;
-                newEnemies.height = 0;
-                newEnemies.width = 0;
-
-            }, 200);
-
-        };
-
-
-    }
-  
-
 
     if (obstacle.collision(myGamePiece)) {
+        myGamePiece.image.src = "explosion.png";
 
         obstacle.update();
         myGamePiece.update();
@@ -227,14 +253,25 @@ function updateGameArea() {
 
     }
     if (myGameArea.frameNo == 1 || everyinterval(70 - score)) {
+        // myGameArea.begin();
 
         y = myGameArea.canvas.height;
         x = myGameArea.canvas.height;
 
         minHeight = 200;
         maxHeight = 600;
-        let mathRandom = Math.random() * (480 - 0)
+        // function component(width, height, source, x, y, type) {
+
+        // height = Math.floor(Math.random() * (maxHeight - minHeight + 1) + minHeight);
+        // width = Math.floor(Math.random() * (maxHeight - minHeight + 1) + minHeight);
+        let mathRandom = Math.random() * 480 - 0
         enemies.push(new component(30, 30, "enemy.png", mathRandom, 0, "image"));
+        // enemyShip.onload = function(){
+        // enemies.push(enemyShip);
+
+
+
+        // }
 
     }
 
@@ -247,7 +284,6 @@ function updateGameArea() {
         let mathRandom = Math.random() * 480 - 0
 
         obstacles.push(new component(100, 20, "red", mathRandom, 0));
-        obstacles.update();
 
     }
 

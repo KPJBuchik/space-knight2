@@ -156,7 +156,6 @@ function updateGameArea() {
     for (i = 0; i < obstacles.length; i++) {
         if (myGamePiece.collision(obstacles[i])) {
 
-            myGamePiece.image.src = "explosion.png";
             myGamePiece.update();
             myGameArea.stop();
             console.log("collision");
@@ -166,7 +165,6 @@ function updateGameArea() {
 
         if (myGamePiece.collision(enemies[i])) {
 
-            myGamePiece.image.src = "explosion.png";
             myGamePiece.newPos();
             myGamePiece.update();
             myGameArea.stop();
@@ -175,7 +173,6 @@ function updateGameArea() {
 
         };
         if (torpedoe.collision(enemies[i])) {
-            enemies[i].image.src = "explosion.png";
             newEnemies = enemies[i]
             setTimeout(function () {
                 score++;
@@ -195,7 +192,6 @@ function updateGameArea() {
 
 
     if (obstacle.collision(myGamePiece)) {
-        myGamePiece.image.src = "explosion.png";
 
         obstacle.update();
         myGamePiece.update();
@@ -237,9 +233,8 @@ function updateGameArea() {
 
         minHeight = 200;
         maxHeight = 600;
-        let mathRandom = Math.random() * 480 - 0
+        let mathRandom = Math.random() * (480 - 0)
         enemies.push(new component(30, 30, "enemy.png", mathRandom, 0, "image"));
-        enemies.image.src = "enemy.png"
 
     }
 

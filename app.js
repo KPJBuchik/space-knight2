@@ -231,19 +231,15 @@ function updateGameArea() {
 
     }
     if (myGameArea.frameNo == 1 || everyinterval(70 - score)) {
+
         y = myGameArea.canvas.height;
         x = myGameArea.canvas.height;
 
         minHeight = 200;
         maxHeight = 600;
-        // function component(width, height, source, x, y, type) {
-
-        // height = Math.floor(Math.random() * (maxHeight - minHeight + 1) + minHeight);
-        // width = Math.floor(Math.random() * (maxHeight - minHeight + 1) + minHeight);
         let mathRandom = Math.random() * 480 - 0
         enemies.push(new component(30, 30, "enemy.png", mathRandom, 0, "image"));
-        enemies.update();
-        // enemiesRight.push(new component(30, 30, "enemy.png", mathRandom, 0, "image"));
+        enemies.image.src = "enemy.png"
 
     }
 

@@ -10,10 +10,10 @@ let bullets = 0;
 let score = 0;
 let newEnemies;
 //generate all game pieces that are not randomly generated 
-window.onload = function() {
-startGame();
-}
-    function startGame() {
+
+function startGame() {
+    myGameArea.begin();
+
     // audioObj = new Audio("assets/theme.m4a");
     // audioObj.addEventListener("canplaythrough", event => {
     //     event.preventDefault();
@@ -27,7 +27,6 @@ startGame();
     let mathRandom = Math.random() * 480 - 0
     enemies.push(new component(30, 30, "enemy.png", mathRandom, 0, "image"));
 
-    myGameArea.begin();
 }
 //game area, canvas context, and mechanism for arrow key movement
 let myGameArea = {
@@ -257,7 +256,7 @@ function updateGameArea() {
 
     }
     if (myGameArea.frameNo == 1 || everyinterval(70 - score)) {
-        
+
         y = myGameArea.canvas.height;
         x = myGameArea.canvas.height;
 

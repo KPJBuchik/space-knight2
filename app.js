@@ -39,10 +39,7 @@ let myGameArea = {
         document.body.insertBefore(this.canvas, document.body.childNodes[0]);
 
         this.interval = setInterval(updateGameArea, 20);
-        window.addEventListener('touchmove', function (e) {
-            myGameArea.x = e.touches[0].screenX;
-            myGameArea.y = e.touches[0].screenY;
-        })
+  
 
         window.addEventListener('keydown', function (e) {
             myGameArea.key = e.keyCode;
@@ -52,7 +49,10 @@ let myGameArea = {
             myGameArea.key = false;
             clearmove(e);
         });
-
+        window.addEventListener('touchmove', function (e) {
+            myGameArea.x = e.touches[0].screenX;
+            myGameArea.y = e.touches[0].screenY;
+        })
 
     },
     clear: function () {

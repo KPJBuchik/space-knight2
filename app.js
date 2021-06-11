@@ -2,6 +2,8 @@
 let myGamePiece;
 let torpedoe;
 let obstacle;
+let redObstacle;
+let enemyShip;
 let enemies = [];
 let enemiesRight = [];
 let enemiesCenter = [];
@@ -9,10 +11,11 @@ let obstacles = [];
 let bullets = 0;
 let score = 0;
 let newEnemies;
-//generate all game pieces that are not randomly generated 
 
+//generate all game pieces that are not randomly generated 
 function startGame() {
     myGameArea.begin();
+    let mathRandom = Math.random() * 480 - 0
 
     // audioObj = new Audio("assets/theme.m4a");
     // audioObj.addEventListener("canplaythrough", event => {
@@ -24,8 +27,8 @@ function startGame() {
     torpedoe = new component(5, 5, "bullet.png", 150, 240, "image");
     obstacle = new component(100, 20, "green", 380, -40, "color");
     powerUp = new component(20, 20, "blue", 250, -90, "color");
-    let mathRandom = Math.random() * 480 - 0
-    enemies.push(new component(30, 30, "enemy.png", mathRandom, 0, "image"));
+    enemyShip = new component(30, 30, "enemy.png", mathRandom, 0, "image");
+    redObstacle = new component(100, 20, "red", mathRandom, 0, "color")
 
 }
 //game area, canvas context, and mechanism for arrow key movement
@@ -256,7 +259,7 @@ function updateGameArea() {
 
     }
     if (myGameArea.frameNo == 1 || everyinterval(70 - score)) {
-
+        console.log("asdfasdfas")
         y = myGameArea.canvas.height;
         x = myGameArea.canvas.height;
 
@@ -267,8 +270,9 @@ function updateGameArea() {
         // height = Math.floor(Math.random() * (maxHeight - minHeight + 1) + minHeight);
         // width = Math.floor(Math.random() * (maxHeight - minHeight + 1) + minHeight);
         let mathRandom = Math.random() * 480 - 0
+
+        // enemies.push(new component(enemyShip, mathRandom, -40,"image"));
         enemies.push(new component(30, 30, "enemy.png", mathRandom, 0, "image"));
-        // enemiesRight.push(new component(30, 30, "enemy.png", mathRandom, 0, "image"));
 
     }
 
@@ -277,9 +281,8 @@ function updateGameArea() {
         x = myGameArea.canvas.height;
         minHeight = 200;
         maxHeight = 600;
-        let mathRandom = Math.random() * 480 - 0
-
-        obstacles.push(new component(100, 20, "red", mathRandom, 0, "color"));
+        console.log("comeon")
+        obstacles.push(redObstacle);
 
 
     }

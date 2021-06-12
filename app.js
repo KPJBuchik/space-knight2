@@ -23,7 +23,6 @@ function startGame() {
     myGamePiece = new component(15, 20, "spaceship.png", 150, 240, "image");
     torpedoe = new component(5, 5, "bullet.png", 150, 240, "image");
     obstacle = new component(100, 20, "green", 380, -40);
-    enemyShip = new component(30, 30,"enemy.png", mathRandom, -40, "image")
     
 }
 //game area, canvas context, and mechanism for arrow key movement
@@ -171,8 +170,16 @@ function updateGameArea() {
     myGameArea.clear();
     myGameArea.frameNo += 1;
 
+    if (myGameArea.key && myGameArea.key == 37) { myGamePiece.speedX = -4; };
+    if (myGameArea.key && myGameArea.key == 39) { myGamePiece.speedX = 4; };
+    if (myGameArea.key && myGameArea.key == 38) { myGamePiece.speedY = -4; };
+    if (myGameArea.key && myGameArea.key == 40) { myGamePiece.speedY = 4; };
+
+
+
     myGamePiece.newPos();
     myGamePiece.update();
+
 
     torpedoe.x = myGamePiece.x;
     // torpedoe.y = myGamePiece.y;
@@ -190,7 +197,6 @@ function updateGameArea() {
         obstacle.update();
         myGamePiece.update();
         myGameArea.stop();
-        
     }
     else if
         (myGameArea.key && myGameArea.key == 83) {
@@ -233,7 +239,7 @@ function updateGameArea() {
         // height = Math.floor(Math.random() * (maxHeight - minHeight + 1) + minHeight);
         // width = Math.floor(Math.random() * (maxHeight - minHeight + 1) + minHeight);
         let mathRandom = Math.random() * 480 - 0
-        enemies.push(new component(30, 30, "enemy.png", mathRandom, 0, "image"));
+        enemies.push(new component(30, 30, "green", mathRandom, 0, "color"));
         // enemyShip.onload = function(){
         console.log(enemies)
 
@@ -264,13 +270,8 @@ function updateGameArea() {
     }
 
 
-    if (myGameArea.key && myGameArea.key == 37) { myGamePiece.speedX = -4; };
-    if (myGameArea.key && myGameArea.key == 39) { myGamePiece.speedX = 4; };
-    if (myGameArea.key && myGameArea.key == 38) { myGamePiece.speedY = -4; };
-    if (myGameArea.key && myGameArea.key == 40) { myGamePiece.speedY = 4; };
-
-
-
+    //     if (score == 2) {
+    // myGameArea.begin()    }
 
 }
 

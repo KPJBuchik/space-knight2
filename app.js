@@ -12,6 +12,7 @@ let newEnemies;
 //generate all game pieces that are not randomly generated 
 function startGame() {
     myGameArea.begin();
+    let mathRandom = Math.random() * 480 - 0
 
     // audioObj = new Audio("assets/theme.m4a");
     // audioObj.addEventListener("canplaythrough", event => {
@@ -22,7 +23,8 @@ function startGame() {
     myGamePiece = new component(15, 20, "spaceship.png", 150, 240, "image");
     torpedoe = new component(5, 5, "bullet.png", 150, 240, "image");
     obstacle = new component(100, 20, "green", 380, -40);
-    enemyShip = new component(100, 20,"enemy.png",300,-40)
+    enemyShip = new component(30, 30,"enemy.png", mathRandom, -40, "image")
+    
 }
 //game area, canvas context, and mechanism for arrow key movement
 let myGameArea = {
@@ -133,6 +135,7 @@ function updateGameArea() {
             myGamePiece.update();
             myGameArea.stop();
             console.log("collision");
+            return;
         }
     }
     for (i = 0; i < enemies.length; i++) {
@@ -157,7 +160,7 @@ function updateGameArea() {
                 document.getElementById("show-score").innerHTML = score;
                 newEnemies.height = 0;
                 newEnemies.width = 0;
-
+                return; 
             }, 200);
 
         };
@@ -165,21 +168,11 @@ function updateGameArea() {
 
     }
 
-
-    if (myGameArea.key && myGameArea.key == 37) { myGamePiece.speedX = -4; };
-    if (myGameArea.key && myGameArea.key == 39) { myGamePiece.speedX = 4; };
-    if (myGameArea.key && myGameArea.key == 38) { myGamePiece.speedY = -4; };
-    if (myGameArea.key && myGameArea.key == 40) { myGamePiece.speedY = 4; };
-
-
     myGameArea.clear();
-
     myGameArea.frameNo += 1;
-
 
     myGamePiece.newPos();
     myGamePiece.update();
-
 
     torpedoe.x = myGamePiece.x;
     // torpedoe.y = myGamePiece.y;
@@ -197,6 +190,7 @@ function updateGameArea() {
         obstacle.update();
         myGamePiece.update();
         myGameArea.stop();
+        
     }
     else if
         (myGameArea.key && myGameArea.key == 83) {
@@ -225,9 +219,8 @@ function updateGameArea() {
 
         myGamePiece.newPos();
         myGamePiece.update();
-        letsTryThis()
+
     }
-    function letsTryThis(){
     if (myGameArea.frameNo == 1 || everyinterval(70 - score)) {
 
         y = myGameArea.canvas.height;
@@ -242,9 +235,7 @@ function updateGameArea() {
         let mathRandom = Math.random() * 480 - 0
         enemies.push(new component(30, 30, "enemy.png", mathRandom, 0, "image"));
         // enemyShip.onload = function(){
-        // enemies.push(enemyShip);
-
-
+        console.log(enemies)
 
         // }
 
@@ -262,24 +253,25 @@ function updateGameArea() {
 
     }
 
+
     for (i = 0; i < enemies.length; i++) {
         enemies[i].y += 1;
         enemies[i].update();
     }
-    // for (i = 0; i < enemiesRight.length; i += 2) {
-    //     enemiesRight[i].y += 1;
-    //     enemiesRight[i].update();
-    // }
     for (i = 0; i < obstacles.length; i++) {
         obstacles[i].y += 1;
         obstacles[i].update();
     }
 
 
-    //     if (score == 2) {
-    // myGameArea.begin()    }
+    if (myGameArea.key && myGameArea.key == 37) { myGamePiece.speedX = -4; };
+    if (myGameArea.key && myGameArea.key == 39) { myGamePiece.speedX = 4; };
+    if (myGameArea.key && myGameArea.key == 38) { myGamePiece.speedY = -4; };
+    if (myGameArea.key && myGameArea.key == 40) { myGamePiece.speedY = 4; };
 
-}
+
+
+
 }
 
 function everyinterval(n) {

@@ -8,6 +8,61 @@ let obstacles = [];
 let bullets = 0;
 let score = 0;
 let newEnemies;
+function component(width, height, source, x, y, type) {
+    this.type = type;
+    if (type == "image") {
+        this.image = new Image();
+        this.image.src = source;
+    }
+    this.width = width;
+    this.height = height;
+    this.speedX = 0;
+    this.speedY = 0;
+    this.x = x;
+    this.y = y;
+    this.update = function () {
+        ctx = myGameArea.context;
+        if (type == "image") {
+            ctx.drawImage(this.image,
+                this.x,
+                this.y,
+                this.width, this.height);
+        } else {
+            ctx.fillStyle = source;
+            ctx.fillRect(this.x, this.y, this.width, this.height);
+        }
+    }
+    this.newPos = function () {
+        this.x += this.speedX;
+        this.y += this.speedY;
+    }
+    this.collision = function (otherobj) {
+        var myleft = this.x;
+        var myright = this.x + (this.width);
+        var mytop = this.y;
+        var mybottom = this.y + (this.height);
+        var otherleft = otherobj.x;
+        var otherright = otherobj.x + (otherobj.width);
+        var othertop = otherobj.y;
+        var otherbottom = otherobj.y + (otherobj.height);
+        var crash = true;
+        if ((mybottom < othertop) || (mytop > otherbottom) || (myright < otherleft) || (myleft > otherright)) {
+            crash = false;
+        }
+        return crash;
+    }
+
+
+
+
+
+
+
+
+
+
+}
+
 
 //generate all game pieces that are not randomly generated 
 function startGame() {
@@ -69,61 +124,6 @@ let myGameArea = {
 }
 
 //game piece interaction
-function component(width, height, source, x, y, type) {
-    this.type = type;
-    if (type == "image") {
-        this.image = new Image();
-        this.image.src = source;
-    }
-    this.width = width;
-    this.height = height;
-    this.speedX = 0;
-    this.speedY = 0;
-    this.x = x;
-    this.y = y;
-    this.update = function () {
-        ctx = myGameArea.context;
-        if (type == "image") {
-            ctx.drawImage(this.image,
-                this.x,
-                this.y,
-                this.width, this.height);
-        } else {
-            ctx.fillStyle = source;
-            ctx.fillRect(this.x, this.y, this.width, this.height);
-        }
-    }
-    this.newPos = function () {
-        this.x += this.speedX;
-        this.y += this.speedY;
-    }
-    this.collision = function (otherobj) {
-        var myleft = this.x;
-        var myright = this.x + (this.width);
-        var mytop = this.y;
-        var mybottom = this.y + (this.height);
-        var otherleft = otherobj.x;
-        var otherright = otherobj.x + (otherobj.width);
-        var othertop = otherobj.y;
-        var otherbottom = otherobj.y + (otherobj.height);
-        var crash = true;
-        if ((mybottom < othertop) || (mytop > otherbottom) || (myright < otherleft) || (myleft > otherright)) {
-            crash = false;
-        }
-        return crash;
-    }
-
-
-
-
-
-
-
-
-
-
-}
-
 //game events
 function updateGameArea() {
     var x, y, height, minHeight, maxHeight;
@@ -151,6 +151,7 @@ function updateGameArea() {
         };
         if (torpedoe.collision(enemies[i])) {
             enemies[i].image.src = "explosion.png";
+
             newEnemies = enemies[i]
             setTimeout(function () {
                 score++;
@@ -239,7 +240,7 @@ function updateGameArea() {
         // height = Math.floor(Math.random() * (maxHeight - minHeight + 1) + minHeight);
         // width = Math.floor(Math.random() * (maxHeight - minHeight + 1) + minHeight);
         let mathRandom = Math.random() * 480 - 0
-        enemies.push(new component(30, 30, "green", mathRandom, 0, "color"));
+        enemies.push(new component(30, 30, "ENEMY.png", mathRandom, 0, "image"));
         // enemyShip.onload = function(){
         console.log(enemies)
 

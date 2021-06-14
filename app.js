@@ -112,6 +112,11 @@ let myGameArea = {
             myGameArea.key = false;
             clearmove(event);
         });
+        window.addEventListener('touchmove', function (event) {
+            myGameArea.x = event.touches[0].screenX;
+            myGameArea.y = event.touches[0].screenY;
+            touchmove(event)
+          })
 
 
     },
@@ -343,6 +348,18 @@ function move(dir) {
     if (dir == down) { myGamePiece.speedY = 1; };
     if (dir == left) { myGamePiece.speedX = -1; };
     if (dir == right) { myGamePiece.speedX = 1; };
+}
+function touchmove(dir){
+    myGamePiece.image.src = "spaceshipburst.png";
+
+    bomb.x = myGamePiece.x;
+    bomb.y = myGamePiece.y;
+
+    if (dir == up) { myGamePiece.speedY = -5; };
+    if (dir == down) { myGamePiece.speedY = 5; };
+    if (dir == left) { myGamePiece.speedX = -5; };
+    if (dir == right) { myGamePiece.speedX = 5; };
+
 }
 
 function clearmove() {

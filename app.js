@@ -12,6 +12,9 @@ let score = 0;
 let newEnemies;
 let rateOfFire = 200.00;
 let bombAmmo = 0;
+let wasClicked = false;
+
+
 
 
 function component(width, height, source, x, y, type) {
@@ -65,8 +68,8 @@ function component(width, height, source, x, y, type) {
 function startGame() {
     myGameArea.begin();
     document.getElementById("opening-scroll").innerHTML = ""
-    document.getElementById("begin").style.display="none"
-    document.getElementById("d-pad").style.display="inherit"
+    document.getElementById("begin").style.display = "none"
+    document.getElementById("d-pad").style.display = "inherit"
 
 
     // audioObj = new Audio("assets/theme.m4a");
@@ -109,10 +112,7 @@ let myGameArea = {
             myGameArea.key = false;
             clearmove(event);
         });
-        window.addEventListener('touchmove', function (event) {
-            myGameArea.x = event.touches[0].screenX;
-            myGameArea.y = event.touches[0].screenY;
-        })
+
 
     },
     clear: function () {
@@ -191,7 +191,7 @@ function updateGameArea() {
                 document.getElementById("show-score").innerHTML = score;
                 newEnemies.x = 1000;
                 return;
-            }, 200);        
+            }, 200);
         };
     }
 
@@ -245,25 +245,24 @@ function updateGameArea() {
         myGameArea.stop();
     }
     else if
-        (myGameArea.key && myGameArea.key == 83) {
+        (myGameArea.key == 83) {
 
-
-        obstacle.newPos();
-        obstacle.update();
-        obstacle.y += 1.0;
-
-        torpedoe.y -= 30.00
-
-        torpedoe.width = 5.0
-        torpedoe.update()
-
-        setTimeout(function () {
-            torpedoe.y = myGamePiece.y
-            torpedoe.x = myGamePiece.x;
-        }, rateOfFire);
-
+            obstacle.newPos();
+            obstacle.update();
+            obstacle.y += 1.0;
+        
+            torpedoe.y -= 30.00
+            torpedoe.update()
+        
+            torpedoe.width = 5.0
+            torpedoe.update()
+        
+            setTimeout(function () {
+                torpedoe.y = myGamePiece.y
+                torpedoe.x = myGamePiece.x;
+            }, rateOfFire);
+        
     }
-
     else {
         obstacle.y += 1.0;
         obstacle.update();
@@ -278,6 +277,7 @@ function updateGameArea() {
             return;
         }, 200);
     }
+
     //enemy ship generation
     if (myGameArea.frameNo == 1 || everyinterval(70)) {
 
@@ -305,7 +305,7 @@ function updateGameArea() {
 
     };
 
-//enemy speed
+    //enemy speed
     for (i = 0; i < enemies.length; i++) {
         enemies[i].y += 1;
         enemies[i].update();
@@ -352,17 +352,27 @@ function clearmove() {
 }
 
 
-window.onload = () => {    
-    typeWriter(txt)
 
+
+function shootTorpedoe(){
+    obstacle.newPos();
+    obstacle.update();
+    obstacle.y += 1.0;
+    torpedoe.update()
+
+    torpedoe.y -= 30
+    torpedoe.update()
+    torpedoe.y -= 70
+
+    torpedoe.width = 5.0
+    torpedoe.update()
+
+    setTimeout(function () {
+        torpedoe.y = myGamePiece.y
+        torpedoe.x = myGamePiece.x;
+    }, rateOfFire);
 
 }
-//opening scroll
-
-// // stars
-// window.onload = () => {
-//     const $el = document.body;
-
 
 
 //     const genRandomNumber = (min, max) => {

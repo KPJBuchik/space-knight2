@@ -48,7 +48,6 @@ body {
      width: 100vw;
     height: 100vh;
     position: relative;
-    overflow: hidden;
     font-family: 'VT323', monospace;
 }
 #terminal{
@@ -117,7 +116,7 @@ background-position:center;
 .stat{margin-left:3vw;
 margin-top:2vh;}
 #begin{
-  position:relative;
+  position:absolute;
   margin-top:10vh;
   margin-bottom:80vh;
 Margin-left:18vw;
@@ -126,7 +125,7 @@ background-color: #54ABB9;
 border: none;
 font-size: 1vw;
 color: #FFFFFF;
-padding: 20px;
+padding: 1.5vw;
 text-align: center;
 text-decoration: none;
 cursor:pointer;
@@ -197,6 +196,7 @@ width: 12;
   margin-top:2vh;
   margin-left:4vw;
   margin-right:4vw;
+  font-size:1.5vw;
 
 }
 
@@ -222,7 +222,7 @@ width: 12;
   height:20vh;
   margin-top:12vh;;
   margin-left:24vw;
-  c
+  
 }
 #right{
   position:absolute;
@@ -263,7 +263,13 @@ width: 12;
 }
 .d-pad-button:hover{
   cursor:pointer;
+
 }
+ .d-pad-button{
+  background-image:url("assets/d-pad.png");
+  width:3.5046vw;
+  height:6.446991404011461vh
+} 
   
 @keyframes twinkle {
     from {

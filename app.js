@@ -339,10 +339,10 @@ function move(dir) {
     bomb.x = myGamePiece.x;
     bomb.y = myGamePiece.y;
 
-    if (dir == "up") { myGamePiece.speedY = -1; };
-    if (dir == "down") { myGamePiece.speedY = 1; };
-    if (dir == "left") { myGamePiece.speedX = -1; };
-    if (dir == "right") { myGamePiece.speedX = 1; };
+    if (dir == up) { myGamePiece.speedY = -1; };
+    if (dir == down) { myGamePiece.speedY = 1; };
+    if (dir == left) { myGamePiece.speedX = -1; };
+    if (dir == right) { myGamePiece.speedX = 1; };
 }
 
 function clearmove() {

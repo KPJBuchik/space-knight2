@@ -266,6 +266,7 @@ width: 12;
 
 }
  .d-pad-button{
+  position:absolute;
   background-image:url("assets/d-pad.png");
   width:3.5046vw;
   height:6.446991404011461vh

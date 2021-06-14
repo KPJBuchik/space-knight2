@@ -82,6 +82,7 @@ body {
     font-family: 'VT323', monospace;    }
     
     .inventory{
+      
       background-image:url("assets/inventory.png");
       background-repeat:no-repeat;
 background-size:contain;
@@ -98,12 +99,16 @@ background-position:center;
     
   #show-score{
     margin-left:4vw;
-    font-size:16vw;
+    margin-right:20vw;
+    margin-top:10vh;
+    font-size:16vh;
   }
 
 #inventory-title{
-  margin-top:10px;
+  position:relative;
+  margin-top:2vh;
   margin-left:5vw;
+  font-size:3vw;
 }
     .stat-value {
       margin-right:3.5vw;
@@ -119,13 +124,15 @@ Margin-left:18vw;
 color:#54ABB9;
 background-color: #54ABB9;
 border: none;
-font-size: 12px;
+font-size: 1vw;
 color: #FFFFFF;
 padding: 20px;
 text-align: center;
 text-decoration: none;
 cursor:pointer;
 z-index:5;
+width:15vw;
+height:8vh;
 
 }
 
@@ -137,18 +144,21 @@ margin-top:60vh;
 
 }
 #action{
+  
   margin-top:14vh;
   margin-left:3vw;
   position: relative;
   background-color: #54ABB9;
   border: none;
-  font-size: 28px;
+  font-size: 2vw;
   color: #FFFFFF;
   padding: 20px;
   text-align: center;
   text-decoration: none;
   overflow: hidden;
-  cursor: pointer;}
+  cursor: pointer;
+  width:12vw;
+height:10vh;}
 
   #action:after {
     content: "";
@@ -189,11 +199,7 @@ width: 12;
   margin-right:4vw;
 
 }
-#form{
-}
-#input:focus{
-  outline: none;
-}
+
 
 .star {
     z-index:-5;
@@ -210,7 +216,54 @@ width: 12;
   width:25px; */
 }
 
+#d-pad{
+  display:none;
+  width:20vw;
+  height:20vh;
+  margin-top:12vh;;
+  margin-left:24vw;
+  c
+}
+#right{
+  position:absolute;
+  margin-top:6.5vh;
+/* //down */
+}
+#right:hover{
+  opacity:.5;
+}
 
+#left{
+  /* /right */
+  transform: rotate(-90deg);
+  position:absolute;
+  margin-left:4vw;
+
+}
+  #left:hover{opacity:.5}
+
+#up{
+  
+  position:absolute;
+  transform: rotate(180deg);
+  margin-top:-6.5vh;
+
+
+}
+#up:hover{
+  opacity:.5;
+}
+
+#down{position:absolute;
+  transform: rotate(90deg);
+  margin-left:-4vw;
+}
+#down:hover{
+  opacity:.5;
+}
+.d-pad-button:hover{
+  cursor:pointer;
+}
   
 @keyframes twinkle {
     from {

@@ -12,9 +12,7 @@
     <script src="app.js"></script>
 </head>
 <body  class="crt" >
-    <div  class="status">
-        <img id="arrows" src="arrows.png" alt="keyboard arrow keys">
-        <img id="s-key" src="s-key.png" alt="S key-shoot">
+    <div  class="status crt">
     </div>
     <div id="ascii"><pre>
 
@@ -32,18 +30,24 @@
                                                                     
     </pre></div>
 
-    <div class="inventory">
-        <div id="inventory-title">SCORE</div>
+    <div class="inventory crt">
         <div id="show-score">0</div>
+    </div>
+    <div class="action-terminal">
+<button  id="action">FIRE</button>
+
+
     </div>
 
     <div id="terminal">
-        <p id="opening-scroll"></p> 
-        <!-- <form id="form">
-            <input id="input" autofocus>
-        </form> -->
-
-        <button onclick="startGame()"  class="crt" id="begin">BEGIN YOUR JOURNEY</button>
+        <p id="opening-scroll">YOU ARE SPACE KNIGHT. SURVIVE BY DESTROYING THE SHIPS AND AVOIDING THE METEORS LONG ENOUGH TO FACE THE MOTHERSHIP. GOD SPEED</p> 
+        <div id="d-pad">
+        <img ontouch="move('up')" id="up" class="d-pad-button" src="assets/d-pad.png">
+        <img onclick="move('right')"id="left" class="d-pad-button" src="assets/d-pad.png">
+        <img onclick="move('down')" id = "right" class="d-pad-button" src="assets/d-pad.png">
+        <img onclick="move('left')"id ="down" class="d-pad-button"src="assets/d-pad.png">
+    </div>
+        <button onclick="startGame()"  class="crt" id="begin">START GAME</button>
 
     </div>
 <!-- <div id="frame"><img id="frame-png" src="assets/frame.png"> -->

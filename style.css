@@ -43,6 +43,7 @@ top:4vh;
           margin-left:25vw;
               margin-top:4vh;}        
 body {
+  touch-action: manipulation;
   background-color:#030709;
   /* background-image:url("assets/background.png"); */
      width: 100vw;

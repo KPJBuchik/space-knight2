@@ -11,7 +11,7 @@ let bullets = 0;
 let score = 0;
 let newEnemies;
 let rateOfFire = 200.00;
-let bombAmmo = 0;
+let bombAmmo = 200;
 let wasClicked = false;
 
 
@@ -185,19 +185,8 @@ function updateGameArea() {
 
         };
 
-        if (bomb.collision(enemies[i])) {
-            enemies[i].image.src = "explosion.png";
-            score++;
+      
 
-            newEnemies = enemies[i]
-            setInterval(function () {
-                console.log("direct hit");
-
-                document.getElementById("show-score").innerHTML = score;
-                newEnemies.x = 1000;
-                return;
-            }, 200);
-        };
     }
 
     myGameArea.clear();
@@ -216,12 +205,11 @@ function updateGameArea() {
     myGamePiece.speedY = 0;
     if (myGamePiece.collision(powerUp)) {
         powerUp.x = 1000;
-        bomb.x = myGamePiece.x;
         bombAmmo += 5;
         bomb.update();
         myGamePiece.update();
     }
-    else if (myGameArea.key && myGameArea.key == 66 && bombAmmo > 0) {
+    else if (myGameArea.key == 66 && bombAmmo > 0) {
 
         obstacle.newPos();
         obstacle.update();
@@ -233,12 +221,24 @@ function updateGameArea() {
         bombAmmo -= 1;
         console.log(bombAmmo)
         bomb.update()
-
-        setTimeout(function () {
-            bomb.y = myGamePiece.y
-            bomb.x = myGamePiece.x;
+        setInterval(function(){
+            bomb.y=100;
+            bomb.width=400;
+            bomb.height=80;
             bomb.update();
-        }, rateOfFire);
+        },500)
+        setTimeout(function(){
+            bomb.width=10;
+            bomb.height=10;
+            bomb.x=1000;
+            bomb.update()
+
+        },1000)
+        // setTimeout(function () {
+        //     bomb.y = myGamePiece.y
+        //     bomb.x = myGamePiece.x;
+        //     bomb.update();
+        // }, rateOfFire);
 
     }
 
@@ -341,8 +341,7 @@ function everyinterval(n) {
 function move(dir) {
     myGamePiece.image.src = "spaceshipburst.png";
 
-    bomb.x = myGamePiece.x;
-    bomb.y = myGamePiece.y;
+
 
     if (dir == up) { myGamePiece.speedY = -1; };
     if (dir == down) { myGamePiece.speedY = 1; };
@@ -391,15 +390,6 @@ function shootTorpedoe(){
 
 }
 
-
-var lastTouchEnd = 0;
-document.addEventListener('touchend', function (event) {
-  var now = (new Date()).getTime();
-  if (now - lastTouchEnd <= 300) {
-    event.preventDefault();
-  }
-  lastTouchEnd = now;
-}, false);
 
 
 //     const genRandomNumber = (min, max) => {

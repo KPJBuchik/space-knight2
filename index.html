@@ -34,7 +34,7 @@
         <div id="show-score">0</div>
     </div>
     <div class="action-terminal">
-<button onmousedown="shootTorpedoe()" id="action">FIRE</button>
+<button ontouchend="shootTorpedoe()" id="action">FIRE</button>
 
 
     </div>
@@ -42,10 +42,10 @@
     <div id="terminal">
         <p id="opening-scroll">YOU ARE SPACE KNIGHT. SURVIVE BY DESTROYING THE SHIPS AND AVOIDING THE METEORS LONG ENOUGH TO FACE THE MOTHERSHIP. GOD SPEED</p> 
         <div id="d-pad">
-        <div ontouchstart="touchmove(up)" id="up" class="d-pad-button"></div>
-        <div ontouchstart="touchmove(right)"id="left" class="d-pad-button"></div>
-        <div ontouchstart="touchmove(down)" id = "right" class="d-pad-button"></div>
-        <div ontouchstart="move(left)"id ="down" class="d-pad-button"></div>
+        <div ontouchend="touchmove(up)" id="up" class="d-pad-button"></div>
+        <div ontouchend="touchmove(right)"id="left" class="d-pad-button"></div>
+        <div ontouchend="touchmove(down)" id = "right" class="d-pad-button"></div>
+        <div ontouchend="move(left)"id ="down" class="d-pad-button"></div>
     </div>
         <button onclick="startGame()"  class="crt" id="begin">START GAME</button>
 

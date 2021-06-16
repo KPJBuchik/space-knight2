@@ -269,6 +269,10 @@ width: 12;
  .d-pad-button{
    position:absolute;
   background-image:url("assets/d-pad.png");
+  background-repeat:no-repeat;
+  background-size:contain;
+  background-position:center;
+
   width:48px;
   touch-action: manipulation;
 

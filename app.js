@@ -7,17 +7,22 @@ let explosion;
 let enemies = [];
 let obstacles = [];
 let waveTwo = [];
+let fighters = [];
+let enemyWeapon = [];
+let powerUp = [];
+let allEnemies = (waveTwo, enemies)
 let bullets = 0;
-let score = 0;
 let newEnemies;
 let rateOfFire = 200.00;
-let bombAmmo = 200;
-let wasClicked = false;
+let bombAmmo = 1;
+let score = 0;
+let time = 60;
+
+let mathRandom = Math.floor(Math.random() * (480 - 0 + 1)) + 0
 
 
-
-
-function component(width, height, source, x, y, type) {
+function component(width, height, source, x, y, type, alive) {
+    this.alive = alive
     this.type = type;
     if (type == "image") {
         this.image = new Image();
@@ -30,73 +35,92 @@ function component(width, height, source, x, y, type) {
     this.x = x;
     this.y = y;
     this.update = function () {
+
         ctx = myGameArea.context;
-        if (type == "image") {
+        if ((type == "image") && (alive == true)) {
             ctx.drawImage(this.image,
                 this.x,
                 this.y,
                 this.width, this.height);
+            ctx.font = "30px VT323";
+            ctx.fillStyle = "#54ABB9";
+
+            ctx.fillText(time, 440, 30);
+            ctx.fillText("Ammo: " + bombAmmo, 380, 60);
+
         } else {
             ctx.fillStyle = source;
             ctx.fillRect(this.x, this.y, this.width, this.height);
         }
+
     }
     this.newPos = function () {
         this.x += this.speedX;
         this.y += this.speedY;
     }
     this.collision = function (otherobj) {
-        var myleft = this.x;
-        var myright = this.x + (this.width);
-        var mytop = this.y;
-        var mybottom = this.y + (this.height);
-        var otherleft = otherobj.x;
-        var otherright = otherobj.x + (otherobj.width);
-        var othertop = otherobj.y;
-        var otherbottom = otherobj.y + (otherobj.height);
-        var crash = true;
-        if ((mybottom < othertop) || (mytop > otherbottom) || (myright < otherleft) || (myleft > otherright)) {
-            crash = false;
+        if (otherobj.alive == true) {
+            var myAlive = this.alive
+            var myleft = this.x;
+            var myright = this.x + (this.width);
+            var mytop = this.y;
+            var mybottom = this.y + (this.height);
+            var otherleft = otherobj.x;
+            var otherright = otherobj.x + (otherobj.width);
+            var othertop = otherobj.y;
+            var otherbottom = otherobj.y + (otherobj.height);
+            var otherAlive = otherobj.alive
+            var crash = true;
+
+
+            if ((myAlive != otherAlive) || (mybottom < othertop) || (mytop > otherbottom) || (myright < otherleft) || (myleft > otherright)) {
+                crash = false;
+            }
         }
         return crash;
     }
-
 }
+
+
 
 
 //generate all game pieces that are not randomly generated 
 function startGame() {
     myGameArea.begin();
+
+
     document.getElementById("opening-scroll").innerHTML = ""
     document.getElementById("begin").style.display = "none"
     document.getElementById("d-pad").style.display = "inherit"
 
 
-    // audioObj = new Audio("assets/theme.m4a");
-    // audioObj.addEventListener("canplaythrough", event => {
-    //     event.preventDefault();
-    //     /* the audio is now playable; play it if permissions allow */
-    //     audioObj.play();f
-    // });
-    myGamePiece = new component(15, 20, "spaceship.png", 150, 240, "image");
-    torpedoe = new component(5, 5, "bullet.png", 150, 240, "image");
-    obstacle = new component(100, 20, "green", 380, -40);
-    powerUp = new component(50, 50, "green", 300, -40);
-    bomb = new component(10, 10, "blue", 150, 240);
-    explosion = new component(200, 200, "explosion.png", 20, 300, "image");
-
+    myGamePiece = new component(30, 30, "spaceship.png", 20, 240, "image", true);
+    torpedoe = new component(5, 5, "bullet.png", 150, 240, "image", true);
+    bomb = new component(5, 200, "blue", 150, 240, "color", true);
+    explosion = new component(200, 200, "explosion.png", 20, 300, "image", true);
+    galaga1 = new component(30, 30, "green", 0,240, "color",false  )
 }
 //game area, canvas context, and mechanism for arrow key movement
 let myGameArea = {
     canvas: document.createElement("canvas"),
     begin: function () {
+        setInterval(count, 1000)
 
+        mainTheme = new Audio("assets/theme.m4a");
+        mainTheme.addEventListener("canplaythrough", event => {
+            event.preventDefault();
+            /* the audio is now playable; play it if permissions allow */
+            mainTheme.play();
+        });
+
+
+        setInterval(decrement, 1000)
         this.canvas.width = 480.00;
         this.canvas.height = 270.00;
         score = 0;
         document.getElementById("show-score").innerHTML = score;
 
-        this.context = this.canvas.getContext("2d", { alpha: false });
+        this.context = this.canvas.getContext("2d");
         this.frameNo = 0;
 
         document.body.insertBefore(this.canvas, document.body.childNodes[0]);
@@ -106,7 +130,8 @@ let myGameArea = {
 
         window.addEventListener('keydown', function (event) {
             myGameArea.key = event.keyCode;
-            move(event);
+            touchmove(event);
+
         });
         window.addEventListener('keyup', function (event) {
             myGameArea.key = false;
@@ -116,7 +141,7 @@ let myGameArea = {
             myGameArea.x = event.touches[0].screenX;
             myGameArea.y = event.touches[0].screenY;
             touchmove(event)
-          })
+        })
 
 
     },
@@ -127,40 +152,200 @@ let myGameArea = {
 
     stop: function () {
         clearInterval(this.interval);
+        clearInterval(score, count);
+        ctx.font = "30px VT323";
+        ctx.fillText("Final Score:" + score, 10, 50);
+        mainTheme.src = ""
     },
+    stopAudio: function () {
+
+    }
 
 
 }
 
 //game piece interaction
 //game events
-function updateGameArea() {
-    var x, y, height, minHeight, maxHeight;
+var x, y, height, minHeight, maxHeight;
 
-    if (myGameArea.key && myGameArea.key == 37) { myGamePiece.speedX = -4; };
-    if (myGameArea.key && myGameArea.key == 39) { myGamePiece.speedX = 4; };
-    if (myGameArea.key && myGameArea.key == 38) { myGamePiece.speedY = -4; };
-    if (myGameArea.key && myGameArea.key == 40) { myGamePiece.speedY = 4; };
+function updateGameArea() {
+
+    if (myGameArea.key == 37 && myGamePiece.x > 0) { myGamePiece.speedX = -4; };
+    if (myGameArea.key == 39 && myGamePiece.x + 30 < 480.00) { myGamePiece.speedX = 4; };
+    if (myGameArea.key == 38 && myGamePiece.y > 0) { myGamePiece.speedY = -4; };
+    if (myGameArea.key == 40 && myGamePiece.y + 30 < 270.00) { myGamePiece.speedY = 4; };
 
 
     for (i = 0; i < obstacles.length; i++) {
         if (myGamePiece.collision(obstacles[i])) {
 
+            myGamePiece.alive = false
+
             myGamePiece.image.src = "explosion.png";
+            myGamePiece.newPos();
             myGamePiece.update();
             myGameArea.stop();
             console.log("collision");
-            return;
+            return
         }
         if (torpedoe.collision(obstacles[i])) {
-            torpedoe.y = 10000;
+            torpedoe.y = 1000;
             torpedoe.update()
 
         }
+        if (bomb.collision(obstacles[i])) {
+            obstacles[i].alive = false;
+
+            obstacles[i].x = 10000;
+        }
+
+        // if (enemies[i].alive == false) {
+        //     enemies[i].image.src = "";
+
+        // }
     }
+    for (i = 0; i < waveTwo.length; i++) {
+        if (myGamePiece.collision(waveTwo[i])) {
+
+            myGamePiece.alive = false
+
+            myGamePiece.image.src = "explosion.png";
+            myGamePiece.newPos();
+            myGamePiece.update();
+
+            myGameArea.stop();
+            console.log("collision");
+            return
+        }
+        if (torpedoe.collision(waveTwo[i])) {
+
+            torpedoe.x = 10000;
+            torpedoe.update()
+
+        }
+        if (bomb.collision(waveTwo[i])) {
+            waveTwo[i].alive = false;
+
+            waveTwo[i].x = 10000;
+        }
+
+        // if (enemies[i].alive == false) {
+        //     enemies[i].image.src = "";
+
+        // }
+    }
+
     for (i = 0; i < enemies.length; i++) {
 
         if (myGamePiece.collision(enemies[i])) {
+            myGamePiece.alive = false
+
+            myGamePiece.image.src = "explosion.png";
+            myGamePiece.newPos();
+            myGamePiece.update();
+            myGameArea.stop();
+            console.log("collision");
+            myGameArea.stopAudio()
+            return;
+
+        };
+        if (torpedoe.collision(enemies[i])) {
+            audioObj = new Audio("assets/death.m4a");
+            audioObj.addEventListener("canplaythrough", event => {
+                event.preventDefault()
+                audioObj.volume = 0.11;
+                audioObj.play();
+            });
+            enemies[i].image.src = "explosion.png";
+            score++;
+            enemies[i].alive = false;
+            newEnemies = enemies[i];
+            newEnemies.update();
+            console.log(enemies[i].alive);
+            setInterval(function () {
+
+                document.getElementById("show-score").innerHTML = score;
+                newEnemies.image.src = ""
+                newEnemies.height = 0;
+                newEnemies.width = 0;
+
+                return;
+            }, 200);
+
+        };
+        if (bomb.collision(enemies[i])) {
+
+            enemies[i].image.src = "explosion.png";
+            newEnemies.alive = false;
+
+            score++;
+            newEnemies = enemies[i]
+            newEnemies.update()
+            setInterval(function () {
+
+                document.getElementById("show-score").innerHTML = score;
+                newEnemies.x = 1000;
+                return;
+            }, 200);
+        }
+    }
+
+    for (i = 0; i < fighters.length; i++) {
+
+        if (myGamePiece.collision(fighters[i])) {
+
+            myGamePiece.image.src = "explosion.png";
+            myGamePiece.alive = false
+            myGameArea.stopAudio()
+
+            myGamePiece.newPos();
+            myGamePiece.update();
+            myGameArea.stop();
+            console.log("collision");
+            return
+
+        };
+        if (torpedoe.collision(fighters[i])) {
+            fighters[i].image.src = "explosion.png";
+            score++;
+            fighters[i].alive = false;
+            newEnemies = fighters[i]
+            newEnemies.update();
+            setInterval(function () {
+
+                document.getElementById("show-score").innerHTML = score;
+                newEnemies.height = 0;
+                newEnemies.width = 0;
+                newEnemies.x = 1000;
+
+                return;
+            }, 100);
+
+        };
+        if (bomb.collision(fighters[i])) {
+
+            fighters[i].image.src = "explosion.png";
+            newEnemies = fighters[i];
+
+            newEnemies.alive = false;
+
+            score++;
+            newEnemies = enemies[i]
+            newEnemies.update()
+            setInterval(function () {
+
+                document.getElementById("show-score").innerHTML = score;
+                newEnemies.x = 1000;
+                return;
+            }, 200);
+        }
+    }
+
+    for (i = 0; i < enemyWeapon.length; i++) {
+
+        if (myGamePiece.collision(enemyWeapon[i])) {
+            myGamePiece.alive = false
+            myGameArea.stopAudio()
 
             myGamePiece.image.src = "explosion.png";
             myGamePiece.newPos();
@@ -170,127 +355,106 @@ function updateGameArea() {
             return
 
         };
-        if (torpedoe.collision(enemies[i])) {
-            enemies[i].image.src = "explosion.png";
-            score++;
+        if (bomb.collision(enemyWeapon[i])) {
 
-            newEnemies = enemies[i]
+            fighters[i].image.src = "explosion.png";
+            newEnemies = enemyWeapon[i];
+
+            newEnemies.alive = false;
+
+            score++;
+            newEnemies = enemyWeapon[i]
+            newEnemies.update()
             setInterval(function () {
-                console.log("direct hit");
 
                 document.getElementById("show-score").innerHTML = score;
                 newEnemies.x = 1000;
                 return;
             }, 200);
-
-        };
-
-      
-
+        }
     }
 
     myGameArea.clear();
     myGameArea.frameNo += 1;
-
     myGamePiece.newPos();
     myGamePiece.update();
-
 
     torpedoe.x = myGamePiece.x;
     // torpedoe.y = myGamePiece.y;
 
-
+    bomb.x = myGamePiece.x;
+    // bomb.y = myGamePiece.y;
     torpedoe.width = 2;
     myGamePiece.speedX = 0;
     myGamePiece.speedY = 0;
-    if (myGamePiece.collision(powerUp)) {
-        powerUp.x = 1000;
-        bombAmmo += 5;
-        bomb.update();
-        myGamePiece.update();
-    }
-    else if (myGameArea.key == 66 && bombAmmo > 0) {
-
-        obstacle.newPos();
-        obstacle.update();
-        obstacle.y += 1;
-
-        bomb.y -= 100;
-
-        bomb.width = 5;
-        bombAmmo -= 1;
-        console.log(bombAmmo)
-        bomb.update()
-        setInterval(function(){
-            bomb.y=100;
-            bomb.width=400;
-            bomb.height=80;
-            bomb.update();
-        },500)
-        setTimeout(function(){
-            bomb.width=10;
-            bomb.height=10;
-            bomb.x=1000;
-            bomb.update()
-
-        },1000)
-        // setTimeout(function () {
-        //     bomb.y = myGamePiece.y
-        //     bomb.x = myGamePiece.x;
-        //     bomb.update();
-        // }, rateOfFire);
-
+    for (i = 0; i < powerUp.length; i++) {
+        if (myGamePiece.collision(powerUp[i])) {
+            powerUp[i].x = 1000;
+            bombAmmo += 1;
+            myGamePiece.update()
+        }
     }
 
-    if (obstacle.collision(myGamePiece)) {
-        myGamePiece.image.src = "explosion.png";
 
-        obstacle.update();
-        myGamePiece.update();
-        myGameArea.stop();
+    if (myGameArea.key == 66 && bombAmmo > 0) {
+
+        audioObj = new Audio("assets/shoot.m4a");
+        audioObj.volume = 0.11;
+        audioObj.addEventListener("canplaythrough", event => {
+            event.preventDefault();
+            /* the audio is now playable; play it if permissions allow */
+            audioObj.play();
+        });
+        bombAmmo--;
+        shootBomb(bomb);
     }
+
     else if
         (myGameArea.key == 83) {
 
-            obstacle.newPos();
-            obstacle.update();
-            obstacle.y += 1.0;
-        
-            torpedoe.y -= 30.00
-            torpedoe.update()
-        
-            torpedoe.width = 5.0
-            torpedoe.update()
-        
-            setTimeout(function () {
-                torpedoe.y = myGamePiece.y
-                torpedoe.x = myGamePiece.x;
-            }, rateOfFire);
-        
+        audioObj = new Audio("assets/shoot.m4a");
+        audioObj.addEventListener("canplaythrough", event => {
+            audioObj.volume = 0.11;
+
+            event.preventDefault();
+            /* the audio is now playable; play it if permissions allow */
+            audioObj.play();
+        });
+        torpedoe.alive = true;
+
+        torpedoe.image.src = "bullet.png";
+        torpedoe.update();
+
+
+        torpedoe.y -= 30.00;
+        torpedoe.update();
+
+        torpedoe.width = 5.0;
+        torpedoe.update();
+
+        setTimeout(function () {
+            torpedoe.y = myGamePiece.y
+            torpedoe.x = myGamePiece.x;
+        }, rateOfFire);
+
     }
     else {
-        obstacle.y += 1.0;
-        obstacle.update();
+
         myGamePiece.newPos();
         myGamePiece.update();
 
-        setInterval(function () {
-            powerUp.y += 1.0;
-            powerUp.src = "white"
-            powerUp.update();
-
-            return;
-        }, 200);
     }
 
     //enemy ship generation
-    if (myGameArea.frameNo == 1 || everyinterval(70)) {
+    if (myGameArea.frameNo == 1 || everyinterval(60 - (score / 2))) {
 
         y = myGameArea.canvas.height;
-        x = myGameArea.canvas.height;
+        x = myGameArea.canvas.width;
 
-        let mathRandom = Math.random() * 480 - 0
-        enemies.push(new component(30.02, 30.02, "ENEMY.png", mathRandom, 0, "image"));
+        let mathRandom = Math.floor(Math.random() * (480 - 1 + 1)) + 1
+
+
+        enemies.push(new component(30.02, 30.02, "ENEMY.png", mathRandom, 0, "image", true));
         console.log(enemies)
         for (i = 0; i < enemies.length; i++) {
             enemies[i].y += 1;
@@ -299,56 +463,118 @@ function updateGameArea() {
 
     }
     //obstacle generation 
-    if (myGameArea.frameNo == 1 || everyinterval(120 - score)) {
+    if (myGameArea.frameNo == 1 || everyinterval(50 - (score / 2))) {
 
         y = myGameArea.canvas.height;
-        x = myGameArea.canvas.height;
+        x = myGameArea.canvas.width;
 
-        let mathRandom = Math.random() * 480 - 0
+        let mathRandom = Math.floor(Math.random() * (480 - 0 + 1)) + 0
 
-        obstacles.push(new component(100.01, 20.01, "red", mathRandom, 0));
+
+        obstacles.push(new component(100.01, 20.01, "platform.png", mathRandom, 0, "image", true));
 
     };
+    //asteroid generation
+    if (myGameArea.frameNo == 1 || everyinterval(150 - (score / 2))) {
+
+        y = myGameArea.canvas.height;
+        x = myGameArea.canvas.width;
+
+        let mathRandom = Math.floor(Math.random() * (480 - 0 + 1)) + 0
+
+        waveTwo.push(new component(60.00, 60.00, "meteor.png", mathRandom, 0, "image", true));
+
+    };
+    //enemy fighter generation
+    if (myGameArea.frameNo == 1 || everyinterval(100 - (score / 2))) {
+
+        y = myGameArea.canvas.height;
+        x = myGameArea.canvas.width;
+
+        let mathRandom = Math.floor(Math.random() * (480 - 0 + 1)) + 0
+
+        fighters.push(new component(30.02, 30.01, "shooter.png", mathRandom, -40, "image", true));
+        enemyWeapon.push(new component(5, 5, "white", mathRandom, -40, "color", true));
+
+    };
+
+    if (myGameArea.frameNo == 1 || everyinterval(400)) {
+
+        y = myGameArea.canvas.height;
+        x = myGameArea.canvas.width;
+
+        powerUp.push(new component(30.02, 30.01, "powerup.png", mathRandom, 0, "image", true));
+
+
+    };
+
 
     //enemy speed
-    for (i = 0; i < enemies.length; i++) {
-        enemies[i].y += 1;
-        enemies[i].update();
-    };
+    if (score > 30) {
+        for (i = 0; i < enemies.length; i++) {
+            enemies[i].y += 2;
+            enemies[i].update();
+        };
 
-    for (i = 0; i < obstacles.length; i++) {
+    }
+    else
+        for (i = 0; i < enemies.length; i++) {
+            enemies[i].y += 1;
+            enemies[i].update();
+        };
+
+
+
+
+    if (score > 30) {
+        for (i = 0; i < obstacles.length; i++) {
+            obstacles[i].y += 2;
+            obstacles[i].update();
+        };
+
+    }
+
+    else for (i = 0; i < obstacles.length; i++) {
         obstacles[i].y += 1;
         obstacles[i].update();
     };
 
-    // if (score > 2 && (myGameArea.frameNo == 1 || everyinterval(120 - score))){
-    //     let mathRandom = Math.random() * 480 - 0
+    for (i = 0; i < waveTwo.length; i++) {
+        waveTwo[i].y += 1.3;
+        waveTwo[i].update();
+    };
 
-    //     waveTwo.push(new component(30, 30, "green", mathRandom, 0, "color"));
-    //     for (i = 0; i < waveTwo.length; i++) {
-    //         waveTwo[i].y += 1;
-    //         waveTwo[i].update();
-    //     };
-    // }
+    for (i = 0; i < powerUp.length; i++) {
+        powerUp[i].y += 1.3;
+        powerUp[i].update();
+    };
+
+    for (i = 0; i < fighters.length; i++) {
+        let enemySpeed = Math.floor(Math.random() * 5)
+        fighters[i].y += enemySpeed;
+        for (w = 0; w < enemyWeapon.length; w++) {
+            enemyWeapon[w].y += enemySpeed
+            fighters[i].update();
+            enemyWeapon[w].y += enemySpeed
+
+            enemyWeapon[w].update();
+       
+
+        }
+    }
+    setInterval(function () {
+        myGameArea.stop();
+
+    }, 60000);
 
 }
 
-function everyinterval(n) {
-    if ((myGameArea.frameNo / n) % 1 == 0) { return true; };
+function everyinterval(number) {
+    if ((myGameArea.frameNo / number) % 1 == 0) { return true; };
     return false;
 }
 
-function move(dir) {
-    myGamePiece.image.src = "spaceshipburst.png";
-
-
-
-    if (dir == up) { myGamePiece.speedY = -1; };
-    if (dir == down) { myGamePiece.speedY = 1; };
-    if (dir == left) { myGamePiece.speedX = -1; };
-    if (dir == right) { myGamePiece.speedX = 1; };
-}
-function touchmove(dir){
+function touchmove(dir) {
     myGamePiece.image.src = "spaceshipburst.png";
 
     bomb.x = myGamePiece.x;
@@ -358,6 +584,8 @@ function touchmove(dir){
     if (dir == down) { myGamePiece.speedY = 5; };
     if (dir == left) { myGamePiece.speedX = -5; };
     if (dir == right) { myGamePiece.speedX = 5; };
+
+
 
 }
 
@@ -370,69 +598,80 @@ function clearmove() {
 
 
 
-function shootTorpedoe(){
-    obstacle.newPos();
-    obstacle.update();
-    obstacle.y += 1.0;
-    torpedoe.update()
+function shootTorpedoe(weapon) {
+    weapon.update()
 
-    torpedoe.y -= 30
-    torpedoe.update()
-    torpedoe.y -= 70
+    weapon.y -= 30;
+    weapon.update();
+    weapon.y - 50;
+    weapon.update();
 
-    torpedoe.width = 5.0
-    torpedoe.update()
+
 
     setTimeout(function () {
-        torpedoe.y = myGamePiece.y
-        torpedoe.x = myGamePiece.x;
-    }, rateOfFire);
+        weapon.y = myGamePiece.y
+        weapon.x = myGamePiece.x;
+    }, 600);
+
+}
+
+
+function shootTorpedoe(weapon) {
+    weapon.update()
+
+    weapon.y -= 30;
+    weapon.update();
+    weapon.y - 50;
+    weapon.update();
+
+
+
+    setTimeout(function () {
+        weapon.y = myGamePiece.y
+        weapon.x = myGamePiece.x;
+    }, 600);
+
+}
+
+function shootBomb(weapon) {
+
+    weapon.y -= 30;
+
+    weapon.update();
+    weapon.y -= 20;
+    weapon.update();
+    weapon.width = 200;
+    weapon.height = 50;
+
+    weapon.y = 20;
+
+        weapon.x=myGamePiece.x
+     
+        weapon.update()
+    weapon.image.src=""
+
+    setInterval(weapon.alive=false,500)
+
 
 }
 
 
 
-//     const genRandomNumber = (min, max) => {
-//         return Math.random() * (max - min) + min;
+function count() {
+    if (myGamePiece.alive == true) {
+        score += 1
+    }
+    else
+        score = score;
+}
+
+function decrement() {
+    time -= 1
+}
+
+// function death(cmpnt) {
+//     if (cmpnt.alive == false) {
+//         cmpnt.image.src = ""
 //     }
-
-//     // Generate a star 
-
-//     const genStar = () => {
-
-//         const star = document.createElement("img");
-//         star.src = ("assets/stars.png")
-//         star.classList.add("star");
-
-//         // Gen star coordinates relative to $el size
-//         let x = genRandomNumber(1, $el.offsetWidth);
-//         let y = genRandomNumber(1, $el.offsetHeight);
-
-//         const { style } = star;
-
-//         style.left = Math.floor(x) + "px";
-//         style.top = Math.floor(y) + "px";
-
-//         style.setProperty(
-//             "--star-size",
-//             genRandomNumber(1, 4) + "px"
-//         );
-
-//         style.setProperty(
-//             "--twinkle-duration",
-//             Math.ceil(genRandomNumber(1, 5)) + "s"
-//         );
-
-//         style.setProperty(
-//             "--twinkle-delay",
-//             Math.ceil(genRandomNumber(1, 5)) + "s"
-//         );
-
-//         return star;
-//     }
-
-//     for (let index = 0; index < 25; index++) {
-//         $el.append(genStar());
-//     }
-
 // }
+

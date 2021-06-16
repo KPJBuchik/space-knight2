@@ -9,7 +9,7 @@
 
     <title>Document</title>
     <link rel="stylesheet" href="style.css" />
-    <script src="app.js"></script>
+
 </head>
 <body  class="crt" >
     <div  class="status crt">
@@ -34,18 +34,18 @@
         <div id="show-score">0</div>
     </div>
     <div class="action-terminal">
-<button ontouchend="shootTorpedoe()" id="action">FIRE</button>
+<button onclick="shootTorpedoe(torpedoe)" id="action">FIRE</button>
 
 
     </div>
 
     <div id="terminal">
-        <p id="opening-scroll">YOU ARE SPACE KNIGHT. SURVIVE BY DESTROYING THE SHIPS AND AVOIDING THE METEORS LONG ENOUGH TO FACE THE MOTHERSHIP. GOD SPEED</p> 
+        <p id="opening-scroll">RACK UP A HIGH SCORE BY AVOIDING ENEMIES AND SPACE OBSTACLES. ENEMY SHIPS CAN BE DESTROYED BY YOUR WEAPON BUT OBSTACLES CAN ONLY BE CLEARED BY THE POWER UP WEAPON. YOU HAVE SIXTY SECONDS. GOD SPEED. </p> 
         <div id="d-pad">
-        <div ontouchend="touchmove(up)" id="up" class="d-pad-button"></div>
-        <div ontouchend="touchmove(right)"id="left" class="d-pad-button"></div>
-        <div ontouchend="touchmove(down)" id = "right" class="d-pad-button"></div>
-        <div ontouchend="touchmove(left)"id ="down" class="d-pad-button"></div>
+        <div onclick="touchmove(up)" ontouchend="touchmove(up)" id="up" class="d-pad-button"></div>
+        <div onclick="touchmove(right)"  ontouchend="touchmove(right)"id="left" class="d-pad-button"></div>
+        <div onclick="touchmove(down)" ontouchend="touchmove(down)" id = "right" class="d-pad-button"></div>
+        <div onclick="touchmove(left)" ontouchend="touchmove(left)"id ="down" class="d-pad-button"></div>
     </div>
         <button onclick="startGame()"  class="crt" id="begin">START GAME</button>
 
@@ -54,6 +54,9 @@
 <div id="canvas crt"></div>    
 </div>
       
-      
+<script src="game.js"></script>
+
+<script src="app.js"></script>
+
 </body>
 </html>

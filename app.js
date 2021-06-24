@@ -33,7 +33,7 @@ window.onload = () => {
     let img = new Image();        
 
     
-    img.src = "start.png";
+    img.src = "assets/start.png";
     img.onload = () => { 
     context.fillStyle = "#222;";
     context.fillRect(800, 800, 800, 800);
@@ -121,10 +121,10 @@ function startGame() {
     document.getElementById("d-pad").style.display = "inherit"
 
 
-    myGamePiece = new component(30, 30, "spaceship.png", 240, 240, "image", true);
-    torpedoe = new component(5, 5, "bullet.png", 150, 240, "image", true);
+    myGamePiece = new component(30, 30, "assets/spaceship.png", 240, 240, "image", true);
+    torpedoe = new component(5, 5, "assets/bullet.png", 150, 240, "image", true);
     bomb = new component(5, 200, "red", 150, 240, "color", true);
-    explosion = new component(200, 200, "explosion.png", 20, 300, "image", true);
+    explosion = new component(200, 200, "assets/explosion.png", 20, 300, "image", true);
     galaga1 = new component(30, 30, "green", 0, 240, "color", false)
 }
 //game area, canvas context, and mechanism for arrow key movement
@@ -136,7 +136,6 @@ let game = {
         mainTheme = new Audio("assets/theme.m4a");
         mainTheme.addEventListener("canplaythrough", event => {
             event.preventDefault();
-            /* the audio is now playable; play it if permissions allow */
             mainTheme.play();
         });
 
@@ -147,7 +146,7 @@ let game = {
         score = 0;
         document.getElementById("show-score").innerHTML = score;
 
-        this.context = this.canvas.getContext("2d");
+        this.context = this.canvas.getContext("2d", { alpha: false });
         this.frameNo = 0;
 
         document.body.insertBefore(this.canvas, document.body.childNodes[0]);
@@ -208,7 +207,7 @@ function updateGame() {
 
             myGamePiece.alive = false
 
-            myGamePiece.image.src = "explosion.png";
+            myGamePiece.image.src = "assets/explosion.png";
             myGamePiece.newPos();
             myGamePiece.update();
             game.stop();
@@ -232,7 +231,7 @@ function updateGame() {
 
             myGamePiece.alive = false
 
-            myGamePiece.image.src = "explosion.png";
+            myGamePiece.image.src = "assets/explosion.png";
             myGamePiece.newPos();
             myGamePiece.update();
 
@@ -263,7 +262,7 @@ function updateGame() {
         if (myGamePiece.collision(enemies[i])) {
             myGamePiece.alive = false
 
-            myGamePiece.image.src = "explosion.png";
+            myGamePiece.image.src = "assets/explosion.png";
             myGamePiece.newPos();
             myGamePiece.update();
             game.stop();
@@ -279,13 +278,13 @@ function updateGame() {
                 audioObj.volume = 0.11;
                 audioObj.play();
             });
-            enemies[i].image.src = "explosion.png";
+            enemies[i].image.src = "assets/explosion.png";
             score++;
             enemies[i].alive = false;
             newEnemies = enemies[i];
             newEnemies.update();
             console.log(enemies[i].alive);
-            setInterval(function () {
+            requestAnimationFrame(function () {
 
                 document.getElementById("show-score").innerHTML = score;
                 newEnemies.image.src = ""
@@ -298,13 +297,13 @@ function updateGame() {
         };
         if (bomb.collision(enemies[i])) {
 
-            enemies[i].image.src = "explosion.png";
+            enemies[i].image.src = "assets/explosion.png";
             newEnemies.alive = false;
 
             score++;
             newEnemies = enemies[i]
             newEnemies.update()
-            setInterval(function () {
+            requestAnimationFrame(function () {
 
                 document.getElementById("show-score").innerHTML = score;
                 newEnemies.x = 1000;
@@ -317,7 +316,7 @@ function updateGame() {
 
         if (myGamePiece.collision(fighters[i])) {
 
-            myGamePiece.image.src = "explosion.png";
+            myGamePiece.image.src = "assets/explosion.png";
             myGamePiece.alive = false
             game.stopAudio()
 
@@ -329,7 +328,7 @@ function updateGame() {
 
         };
         if (torpedoe.collision(fighters[i])) {
-            fighters[i].image.src = "explosion.png";
+            fighters[i].image.src = "assets/explosion.png";
             score++;
             fighters[i].alive = false;
             newEnemies = fighters[i]
@@ -347,7 +346,7 @@ function updateGame() {
         };
         if (bomb.collision(fighters[i])) {
 
-            fighters[i].image.src = "explosion.png";
+            fighters[i].image.src = "assets/explosion.png";
             newEnemies = fighters[i];
 
             newEnemies.alive = false;
@@ -370,7 +369,7 @@ function updateGame() {
             myGamePiece.alive = false
             game.stopAudio()
 
-            myGamePiece.image.src = "explosion.png";
+            myGamePiece.image.src = "assets/explosion.png";
             myGamePiece.newPos();
             myGamePiece.update();
             game.stop();
@@ -380,7 +379,7 @@ function updateGame() {
         };
         if (bomb.collision(enemyWeapon[i])) {
 
-            fighters[i].image.src = "explosion.png";
+            fighters[i].image.src = "assets/explosion.png";
             newEnemies = enemyWeapon[i];
 
             newEnemies.alive = false;
@@ -425,7 +424,6 @@ function updateGame() {
         audioObj.volume = 0.11;
         audioObj.addEventListener("canplaythrough", event => {
             event.preventDefault();
-            /* the audio is now playable; play it if permissions allow */
             audioObj.play();
         });
         bombAmmo--;
@@ -440,12 +438,11 @@ function updateGame() {
             audioObj.volume = 0.11;
 
             event.preventDefault();
-            /* the audio is now playable; play it if permissions allow */
             audioObj.play();
         });
         torpedoe.alive = true;
 
-        torpedoe.image.src = "bullet.png";
+        torpedoe.image.src = "assets/bullet.png";
         torpedoe.update();
 
 
@@ -477,7 +474,7 @@ function updateGame() {
         let mathRandom = Math.floor(Math.random() * (480 - 1 + 1)) + 1
 
 
-        enemies.push(new component(30.02, 30.02, "ENEMY.png", mathRandom, 0, "image", true));
+        enemies.push(new component(30.02, 30.02, "assets/ENEMY.png", mathRandom, 0, "image", true));
         console.log(enemies)
         for (i = 0; i < enemies.length; i++) {
             enemies[i].y += 1;
@@ -505,7 +502,7 @@ function updateGame() {
 
         let mathRandom = Math.floor(Math.random() * (480 - 0 + 1)) + 0
 
-        waveTwo.push(new component(20.00, 20.00, "meteor.png", mathRandom, 0, "image", true));
+        waveTwo.push(new component(20.00, 20.00, "assets.meteor.png", mathRandom, 0, "image", true));
 
     };
     //enemy fighter generation
@@ -516,7 +513,7 @@ function updateGame() {
 
         let mathRandom = Math.floor(Math.random() * (480 - 0 + 1)) + 0
 
-        fighters.push(new component(30.02, 30.01, "shooter.png", mathRandom, -40, "image", true));
+        fighters.push(new component(30.02, 30.01, "assets/shooter.png", mathRandom, -40, "image", true));
         enemyWeapon.push(new component(5, 5, "white", mathRandom, -40, "color", true));
 
     };
@@ -526,7 +523,7 @@ function updateGame() {
         y = game.canvas.height;
         x = game.canvas.width;
 
-        powerUp.push(new component(30.02, 30.01, "powerup.png", mathRandom, 0, "image", true));
+        powerUp.push(new component(30.02, 30.01, "assets/powerup.png", mathRandom, 0, "image", true));
 
 
     };
@@ -598,7 +595,7 @@ function everyinterval(number) {
 }
 
 function touchmove(dir) {
-    myGamePiece.image.src = "spaceshipburst.png";
+    myGamePiece.image.src = "assets/spaceshipburst.png";
 
     bomb.x = myGamePiece.x;
     bomb.y = myGamePiece.y;
@@ -613,7 +610,7 @@ function touchmove(dir) {
 }
 
 function clearmove() {
-    myGamePiece.image.src = "spaceship.png";
+    myGamePiece.image.src = "assets/spaceship.png";
     myGamePiece.speedX = 0;
     myGamePiece.speedY = 0;
 }
@@ -672,7 +669,6 @@ function shootBomb(weapon) {
 
     weapon.update()
     weapon.image.src = ""
-
     setInterval(weapon.alive = false, 500)
 
 

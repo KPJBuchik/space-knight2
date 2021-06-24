@@ -136,6 +136,11 @@ height:8vh;
 
 }
 
+
+#begin:hover{
+  background-color:#3F8E9B;
+}
+
 .action-terminal{height:15vw;
 width:15vw;
 position:absolute;
@@ -194,6 +199,7 @@ width: 12;
 
 }
 #opening-scroll{
+  position:relative;
   margin-top:2vh;
   margin-left:4vw;
   margin-right:4vw;

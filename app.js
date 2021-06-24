@@ -1,4 +1,5 @@
-//global variables
+
+
 let myGamePiece;
 let torpedoe;
 let obstacle;
@@ -20,6 +21,29 @@ let time = 60;
 
 let mathRandom = Math.floor(Math.random() * (480 - 0 + 1)) + 0
 
+window.onload = () => {
+    let canvas = document.createElement('canvas');
+    canvas.setAttribute("id","canvas-html");
+    canvas.setAttribute("width","640");
+    canvas.setAttribute("height","480");
+    document.getElementById("canvas").appendChild(canvas);
+
+    const context = canvas.getContext('2d');
+
+    let img = new Image();        
+
+    
+    img.src = "start.png";
+    img.onload = () => { 
+    context.fillStyle = "#222;";
+    context.fillRect(800, 800, 800, 800);
+    context.drawImage(img, -8, 20);
+
+
+};
+
+
+}
 
 function component(width, height, source, x, y, type, alive) {
     this.alive = alive
@@ -36,7 +60,7 @@ function component(width, height, source, x, y, type, alive) {
     this.y = y;
     this.update = function () {
 
-        ctx = myGameArea.context;
+        ctx = game.context;
         if ((type == "image") && (alive == true)) {
             ctx.drawImage(this.image,
                 this.x,
@@ -84,9 +108,12 @@ function component(width, height, source, x, y, type, alive) {
 
 
 
+
 //generate all game pieces that are not randomly generated 
 function startGame() {
-    myGameArea.begin();
+    game.begin();
+    let element =  document.getElementById("canvas-html");
+    element.remove();
 
 
     document.getElementById("opening-scroll").innerHTML = ""
@@ -94,18 +121,18 @@ function startGame() {
     document.getElementById("d-pad").style.display = "inherit"
 
 
-    myGamePiece = new component(30, 30, "spaceship.png", 20, 240, "image", true);
+    myGamePiece = new component(30, 30, "spaceship.png", 240, 240, "image", true);
     torpedoe = new component(5, 5, "bullet.png", 150, 240, "image", true);
-    bomb = new component(5, 200, "blue", 150, 240, "color", true);
+    bomb = new component(5, 200, "red", 150, 240, "color", true);
     explosion = new component(200, 200, "explosion.png", 20, 300, "image", true);
-    galaga1 = new component(30, 30, "green", 0,240, "color",false  )
+    galaga1 = new component(30, 30, "green", 0, 240, "color", false)
 }
 //game area, canvas context, and mechanism for arrow key movement
-let myGameArea = {
+let game = {
     canvas: document.createElement("canvas"),
-    begin: function () {
-        setInterval(count, 1000)
 
+    begin: function () {
+        setInterval(count, 1000);
         mainTheme = new Audio("assets/theme.m4a");
         mainTheme.addEventListener("canplaythrough", event => {
             event.preventDefault();
@@ -125,21 +152,21 @@ let myGameArea = {
 
         document.body.insertBefore(this.canvas, document.body.childNodes[0]);
 
-        this.interval = setInterval(updateGameArea, 20);
+        this.interval = setInterval(updateGame, 20);
 
 
         window.addEventListener('keydown', function (event) {
-            myGameArea.key = event.keyCode;
+            game.key = event.keyCode;
             touchmove(event);
 
         });
         window.addEventListener('keyup', function (event) {
-            myGameArea.key = false;
+            game.key = false;
             clearmove(event);
         });
         window.addEventListener('touchmove', function (event) {
-            myGameArea.x = event.touches[0].screenX;
-            myGameArea.y = event.touches[0].screenY;
+            game.x = event.touches[0].screenX;
+            game.y = event.touches[0].screenY;
             touchmove(event)
         })
 
@@ -168,12 +195,12 @@ let myGameArea = {
 //game events
 var x, y, height, minHeight, maxHeight;
 
-function updateGameArea() {
+function updateGame() {
 
-    if (myGameArea.key == 37 && myGamePiece.x > 0) { myGamePiece.speedX = -4; };
-    if (myGameArea.key == 39 && myGamePiece.x + 30 < 480.00) { myGamePiece.speedX = 4; };
-    if (myGameArea.key == 38 && myGamePiece.y > 0) { myGamePiece.speedY = -4; };
-    if (myGameArea.key == 40 && myGamePiece.y + 30 < 270.00) { myGamePiece.speedY = 4; };
+    if (game.key == 37 && myGamePiece.x > 0) { myGamePiece.speedX = -4; };
+    if (game.key == 39 && myGamePiece.x + 30 < 480.00) { myGamePiece.speedX = 4; };
+    if (game.key == 38 && myGamePiece.y > 0) { myGamePiece.speedY = -4; };
+    if (game.key == 40 && myGamePiece.y + 30 < 270.00) { myGamePiece.speedY = 4; };
 
 
     for (i = 0; i < obstacles.length; i++) {
@@ -184,7 +211,7 @@ function updateGameArea() {
             myGamePiece.image.src = "explosion.png";
             myGamePiece.newPos();
             myGamePiece.update();
-            myGameArea.stop();
+            game.stop();
             console.log("collision");
             return
         }
@@ -199,10 +226,6 @@ function updateGameArea() {
             obstacles[i].x = 10000;
         }
 
-        // if (enemies[i].alive == false) {
-        //     enemies[i].image.src = "";
-
-        // }
     }
     for (i = 0; i < waveTwo.length; i++) {
         if (myGamePiece.collision(waveTwo[i])) {
@@ -213,7 +236,7 @@ function updateGameArea() {
             myGamePiece.newPos();
             myGamePiece.update();
 
-            myGameArea.stop();
+            game.stop();
             console.log("collision");
             return
         }
@@ -243,9 +266,9 @@ function updateGameArea() {
             myGamePiece.image.src = "explosion.png";
             myGamePiece.newPos();
             myGamePiece.update();
-            myGameArea.stop();
+            game.stop();
             console.log("collision");
-            myGameArea.stopAudio()
+            game.stopAudio()
             return;
 
         };
@@ -296,11 +319,11 @@ function updateGameArea() {
 
             myGamePiece.image.src = "explosion.png";
             myGamePiece.alive = false
-            myGameArea.stopAudio()
+            game.stopAudio()
 
             myGamePiece.newPos();
             myGamePiece.update();
-            myGameArea.stop();
+            game.stop();
             console.log("collision");
             return
 
@@ -345,12 +368,12 @@ function updateGameArea() {
 
         if (myGamePiece.collision(enemyWeapon[i])) {
             myGamePiece.alive = false
-            myGameArea.stopAudio()
+            game.stopAudio()
 
             myGamePiece.image.src = "explosion.png";
             myGamePiece.newPos();
             myGamePiece.update();
-            myGameArea.stop();
+            game.stop();
             console.log("collision");
             return
 
@@ -374,8 +397,8 @@ function updateGameArea() {
         }
     }
 
-    myGameArea.clear();
-    myGameArea.frameNo += 1;
+    game.clear();
+    game.frameNo += 1;
     myGamePiece.newPos();
     myGamePiece.update();
 
@@ -396,7 +419,7 @@ function updateGameArea() {
     }
 
 
-    if (myGameArea.key == 66 && bombAmmo > 0) {
+    if (game.key == 66 && bombAmmo > 0) {
 
         audioObj = new Audio("assets/shoot.m4a");
         audioObj.volume = 0.11;
@@ -410,7 +433,7 @@ function updateGameArea() {
     }
 
     else if
-        (myGameArea.key == 83) {
+        (game.key == 83) {
 
         audioObj = new Audio("assets/shoot.m4a");
         audioObj.addEventListener("canplaythrough", event => {
@@ -446,10 +469,10 @@ function updateGameArea() {
     }
 
     //enemy ship generation
-    if (myGameArea.frameNo == 1 || everyinterval(60 - (score / 2))) {
+    if (game.frameNo == 1 || everyinterval(60 - (score / 2))) {
 
-        y = myGameArea.canvas.height;
-        x = myGameArea.canvas.width;
+        y = game.canvas.height;
+        x = game.canvas.width;
 
         let mathRandom = Math.floor(Math.random() * (480 - 1 + 1)) + 1
 
@@ -463,33 +486,33 @@ function updateGameArea() {
 
     }
     //obstacle generation 
-    if (myGameArea.frameNo == 1 || everyinterval(50 - (score / 2))) {
+    if (game.frameNo == 1 || everyinterval(50 - (score / 2))) {
 
-        y = myGameArea.canvas.height;
-        x = myGameArea.canvas.width;
+        y = game.canvas.height;
+        x = game.canvas.width;
 
         let mathRandom = Math.floor(Math.random() * (480 - 0 + 1)) + 0
 
 
-        obstacles.push(new component(100.01, 20.01, "platform.png", mathRandom, 0, "image", true));
+        obstacles.push(new component(100.01, 20.01, "silver", mathRandom, 0, "color", true));
 
     };
     //asteroid generation
-    if (myGameArea.frameNo == 1 || everyinterval(150 - (score / 2))) {
+    if (game.frameNo == 1 || everyinterval(150 - (score / 2))) {
 
-        y = myGameArea.canvas.height;
-        x = myGameArea.canvas.width;
+        y = game.canvas.height;
+        x = game.canvas.width;
 
         let mathRandom = Math.floor(Math.random() * (480 - 0 + 1)) + 0
 
-        waveTwo.push(new component(60.00, 60.00, "meteor.png", mathRandom, 0, "image", true));
+        waveTwo.push(new component(20.00, 20.00, "meteor.png", mathRandom, 0, "image", true));
 
     };
     //enemy fighter generation
-    if (myGameArea.frameNo == 1 || everyinterval(100 - (score / 2))) {
+    if (game.frameNo == 1 || everyinterval(100 - (score / 2))) {
 
-        y = myGameArea.canvas.height;
-        x = myGameArea.canvas.width;
+        y = game.canvas.height;
+        x = game.canvas.width;
 
         let mathRandom = Math.floor(Math.random() * (480 - 0 + 1)) + 0
 
@@ -498,10 +521,10 @@ function updateGameArea() {
 
     };
 
-    if (myGameArea.frameNo == 1 || everyinterval(400)) {
+    if (game.frameNo == 1 || everyinterval(400)) {
 
-        y = myGameArea.canvas.height;
-        x = myGameArea.canvas.width;
+        y = game.canvas.height;
+        x = game.canvas.width;
 
         powerUp.push(new component(30.02, 30.01, "powerup.png", mathRandom, 0, "image", true));
 
@@ -558,19 +581,19 @@ function updateGameArea() {
             enemyWeapon[w].y += enemySpeed
 
             enemyWeapon[w].update();
-       
+
 
         }
     }
     setInterval(function () {
-        myGameArea.stop();
+        game.stop();
 
     }, 60000);
 
 }
 
 function everyinterval(number) {
-    if ((myGameArea.frameNo / number) % 1 == 0) { return true; };
+    if ((game.frameNo / number) % 1 == 0) { return true; };
     return false;
 }
 
@@ -645,12 +668,12 @@ function shootBomb(weapon) {
 
     weapon.y = 20;
 
-        weapon.x=myGamePiece.x
-     
-        weapon.update()
-    weapon.image.src=""
+    weapon.x = myGamePiece.x
 
-    setInterval(weapon.alive=false,500)
+    weapon.update()
+    weapon.image.src = ""
+
+    setInterval(weapon.alive = false, 500)
 
 
 }
@@ -668,10 +691,4 @@ function count() {
 function decrement() {
     time -= 1
 }
-
-// function death(cmpnt) {
-//     if (cmpnt.alive == false) {
-//         cmpnt.image.src = ""
-//     }
-// }
 

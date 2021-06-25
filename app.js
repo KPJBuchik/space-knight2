@@ -284,7 +284,7 @@ function updateGame() {
             newEnemies = enemies[i];
             newEnemies.update();
             console.log(enemies[i].alive);
-            requestAnimationFrame(function () {
+            setInterval(function () {
 
                 document.getElementById("show-score").innerHTML = score;
                 newEnemies.image.src = ""
@@ -303,7 +303,7 @@ function updateGame() {
             score++;
             newEnemies = enemies[i]
             newEnemies.update()
-            requestAnimationFrame(function () {
+            setInterval(function () {
 
                 document.getElementById("show-score").innerHTML = score;
                 newEnemies.x = 1000;
@@ -502,7 +502,7 @@ function updateGame() {
 
         let mathRandom = Math.floor(Math.random() * (480 - 0 + 1)) + 0
 
-        waveTwo.push(new component(20.00, 20.00, "assets.meteor.png", mathRandom, 0, "image", true));
+        waveTwo.push(new component(20.00, 20.00, "assets/meteor.png", mathRandom, 0, "image", true));
 
     };
     //enemy fighter generation

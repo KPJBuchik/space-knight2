@@ -15,7 +15,7 @@ let allEnemies = (waveTwo, enemies)
 let bullets = 0;
 let newEnemies;
 let rateOfFire = 200.00;
-let bombAmmo = 1;
+let bombAmmo = 40;
 let score = 0;
 let time = 60;
 
@@ -123,7 +123,7 @@ function startGame() {
 
     myGamePiece = new component(30, 30, "assets/spaceship.png", 240, 240, "image", true);
     torpedoe = new component(5, 5, "assets/bullet.png", 150, 240, "image", true);
-    bomb = new component(5, 200, "red", 150, 240, "color", true);
+    bomb = new component(30, 20, "assets/platform.png", 0, 0, "image", true);
     explosion = new component(200, 200, "assets/explosion.png", 20, 300, "image", true);
     galaga1 = new component(30, 30, "green", 0, 240, "color", false)
 }
@@ -427,7 +427,7 @@ function updateGame() {
             audioObj.play();
         });
         bombAmmo--;
-        shootBomb(bomb);
+        shootTorpedoe(bomb);
     }
 
     else if
@@ -619,39 +619,26 @@ function clearmove() {
 
 
 function shootTorpedoe(weapon) {
-    weapon.update()
+    weapon.alive = true;
 
-    weapon.y -= 30;
-    weapon.update();
-    weapon.y - 50;
     weapon.update();
 
 
+    weapon.y -= 30.00;
+    weapon.update();
+
+    weapon.update();
 
     setTimeout(function () {
         weapon.y = myGamePiece.y
         weapon.x = myGamePiece.x;
-    }, 600);
+    }, rateOfFire);
+
+
 
 }
 
 
-function shootTorpedoe(weapon) {
-    weapon.update()
-
-    weapon.y -= 30;
-    weapon.update();
-    weapon.y - 50;
-    weapon.update();
-
-
-
-    setTimeout(function () {
-        weapon.y = myGamePiece.y
-        weapon.x = myGamePiece.x;
-    }, 600);
-
-}
 
 function shootBomb(weapon) {
 

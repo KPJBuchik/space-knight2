@@ -11,11 +11,10 @@ let waveTwo = [];
 let fighters = [];
 let enemyWeapon = [];
 let powerUp = [];
-let allEnemies = (waveTwo, enemies)
 let bullets = 0;
 let newEnemies;
 let rateOfFire = 200.00;
-let bombAmmo = 40;
+let bombAmmo = 1;
 let score = 0;
 let time = 60;
 
@@ -296,7 +295,12 @@ function updateGame() {
 
         };
         if (bomb.collision(enemies[i])) {
-
+            audioObj = new Audio("assets/death.m4a");
+            audioObj.addEventListener("canplaythrough", event => {
+                event.preventDefault()
+                audioObj.volume = 0.11;
+                audioObj.play();
+            });
             enemies[i].image.src = "assets/explosion.png";
             newEnemies.alive = false;
 
@@ -315,7 +319,12 @@ function updateGame() {
     for (i = 0; i < fighters.length; i++) {
 
         if (myGamePiece.collision(fighters[i])) {
-
+            audioObj = new Audio("assets/death.m4a");
+            audioObj.addEventListener("canplaythrough", event => {
+                event.preventDefault()
+                audioObj.volume = 0.11;
+                audioObj.play();
+            });
             myGamePiece.image.src = "assets/explosion.png";
             myGamePiece.alive = false
             game.stopAudio()
@@ -328,6 +337,12 @@ function updateGame() {
 
         };
         if (torpedoe.collision(fighters[i])) {
+            audioObj = new Audio("assets/death.m4a");
+            audioObj.addEventListener("canplaythrough", event => {
+                event.preventDefault()
+                audioObj.volume = 0.11;
+                audioObj.play();
+            });
             fighters[i].image.src = "assets/explosion.png";
             score++;
             fighters[i].alive = false;
@@ -345,7 +360,12 @@ function updateGame() {
 
         };
         if (bomb.collision(fighters[i])) {
-
+            audioObj = new Audio("assets/death.m4a");
+            audioObj.addEventListener("canplaythrough", event => {
+                event.preventDefault()
+                audioObj.volume = 0.11;
+                audioObj.play();
+            });
             fighters[i].image.src = "assets/explosion.png";
             newEnemies = fighters[i];
 
@@ -366,6 +386,12 @@ function updateGame() {
     for (i = 0; i < enemyWeapon.length; i++) {
 
         if (myGamePiece.collision(enemyWeapon[i])) {
+            audioObj = new Audio("assets/death.m4a");
+            audioObj.addEventListener("canplaythrough", event => {
+                event.preventDefault()
+                audioObj.volume = 0.11;
+                audioObj.play();
+            });
             myGamePiece.alive = false
             game.stopAudio()
 
@@ -619,15 +645,25 @@ function clearmove() {
 
 
 function shootTorpedoe(weapon) {
+    weapon.y -= 10.00;
+    weapon.update();
+
     weapon.alive = true;
+    weapon.y -= 20.00;
 
     weapon.update();
 
 
     weapon.y -= 30.00;
+    weapon.newPos();
     weapon.update();
-
+    weapon.y -= 40.00;
+    weapon.newPos();
     weapon.update();
+    weapon.y -= 50.00;
+    weapon.newPos();
+    weapon.update();
+    weapon.y -= 60.00;
 
     setTimeout(function () {
         weapon.y = myGamePiece.y

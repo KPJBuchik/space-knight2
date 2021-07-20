@@ -22,24 +22,24 @@ let mathRandom = Math.floor(Math.random() * (480 - 0 + 1)) + 0
 
 window.onload = () => {
     let canvas = document.createElement('canvas');
-    canvas.setAttribute("id","canvas-html");
-    canvas.setAttribute("width","640");
-    canvas.setAttribute("height","480");
+    canvas.setAttribute("id", "canvas-html");
+    canvas.setAttribute("width", "640");
+    canvas.setAttribute("height", "480");
     document.getElementById("canvas").appendChild(canvas);
 
     const context = canvas.getContext('2d');
 
-    let img = new Image();        
+    let img = new Image();
 
-    
+
     img.src = "assets/start.png";
-    img.onload = () => { 
-    context.fillStyle = "#222;";
-    context.fillRect(800, 800, 800, 800);
-    context.drawImage(img, -8, 20);
+    img.onload = () => {
+        context.fillStyle = "#222;";
+        context.fillRect(800, 800, 800, 800);
+        context.drawImage(img, -8, 20);
 
 
-};
+    };
 
 
 }
@@ -111,7 +111,7 @@ function component(width, height, source, x, y, type, alive) {
 //generate all game pieces that are not randomly generated 
 function startGame() {
     game.begin();
-    let element =  document.getElementById("canvas-html");
+    let element = document.getElementById("canvas-html");
     element.remove();
 
 
@@ -143,6 +143,7 @@ let game = {
         this.canvas.width = 480.00;
         this.canvas.height = 270.00;
         score = 0;
+        time=60;
         document.getElementById("show-score").innerHTML = score;
 
         this.context = this.canvas.getContext("2d", { alpha: false });
@@ -182,7 +183,9 @@ let game = {
         ctx.fillText("Final Score:" + score, 10, 50);
         mainTheme.src = ""
     },
-    stopAudio: function () {
+    restartGame: function(){
+        game.stop();
+startGame();
 
     }
 
@@ -194,11 +197,11 @@ let game = {
 var x, y, height, minHeight, maxHeight;
 
 function updateGame() {
-
+    //movement and prevents ship from going off the canvas 
     if (game.key == 37 && myGamePiece.x > 0) { myGamePiece.speedX = -4; };
     if (game.key == 39 && myGamePiece.x + 30 < 480.00) { myGamePiece.speedX = 4; };
     if (game.key == 38 && myGamePiece.y > 0) { myGamePiece.speedY = -4; };
-    if (game.key == 40 && myGamePiece.y + 30 < 270.00) { myGamePiece.speedY = 4; };
+    if (game.key == 40 && myGamePiece.y + 30 < 270.00) { myGamePiece.speedY = 4; }
 
 
     for (i = 0; i < obstacles.length; i++) {
@@ -250,10 +253,6 @@ function updateGame() {
             waveTwo[i].x = 10000;
         }
 
-        // if (enemies[i].alive == false) {
-        //     enemies[i].image.src = "";
-
-        // }
     }
 
     for (i = 0; i < enemies.length; i++) {

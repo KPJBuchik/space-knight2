@@ -17,6 +17,7 @@ let rateOfFire = 200.00;
 let bombAmmo = 1;
 let score = 0;
 let time = 60;
+let restartCounter = 0
 
 let mathRandom = Math.floor(Math.random() * (480 - 0 + 1)) + 0
 
@@ -26,23 +27,15 @@ window.onload = () => {
     canvas.setAttribute("width", "640");
     canvas.setAttribute("height", "480");
     document.getElementById("canvas").appendChild(canvas);
-
     const context = canvas.getContext('2d');
-
     let img = new Image();
-
-
     img.src = "assets/start.png";
     img.onload = () => {
         context.fillStyle = "#222;";
         context.fillRect(800, 800, 800, 800);
         context.drawImage(img, -8, 20);
-
-
     };
-
-
-}
+};
 
 function component(width, height, source, x, y, type, alive) {
     this.alive = alive
@@ -58,7 +51,6 @@ function component(width, height, source, x, y, type, alive) {
     this.x = x;
     this.y = y;
     this.update = function () {
-
         ctx = game.context;
         if ((type == "image") && (alive == true)) {
             ctx.drawImage(this.image,
@@ -67,7 +59,6 @@ function component(width, height, source, x, y, type, alive) {
                 this.width, this.height);
             ctx.font = "30px VT323";
             ctx.fillStyle = "#54ABB9";
-
             ctx.fillText(time, 440, 30);
             ctx.fillText("Ammo: " + bombAmmo, 380, 60);
 
@@ -111,21 +102,22 @@ function component(width, height, source, x, y, type, alive) {
 //generate all game pieces that are not randomly generated 
 function startGame() {
     game.begin();
+    if (restartCounter < 1){
     let element = document.getElementById("canvas-html");
     element.remove();
-
-
+    }
     document.getElementById("opening-scroll").innerHTML = ""
     document.getElementById("begin").style.display = "none"
     document.getElementById("d-pad").style.display = "inherit"
-
-
     myGamePiece = new component(30, 30, "assets/spaceship.png", 240, 240, "image", true);
     torpedoe = new component(5, 5, "assets/bullet.png", 150, 240, "image", true);
     bomb = new component(30, 20, "assets/platform.png", 0, 0, "image", true);
     explosion = new component(200, 200, "assets/explosion.png", 20, 300, "image", true);
     galaga1 = new component(30, 30, "green", 0, 240, "color", false)
-}
+};
+
+
+
 //game area, canvas context, and mechanism for arrow key movement
 let game = {
     canvas: document.createElement("canvas"),
@@ -143,7 +135,7 @@ let game = {
         this.canvas.width = 480.00;
         this.canvas.height = 270.00;
         score = 0;
-        time=60;
+        time = 60;
         document.getElementById("show-score").innerHTML = score;
 
         this.context = this.canvas.getContext("2d", { alpha: false });
@@ -183,9 +175,17 @@ let game = {
         ctx.fillText("Final Score:" + score, 10, 50);
         mainTheme.src = ""
     },
-    restartGame: function(){
+    restartGame: function () {
+        restartCounter++;
+        game.clear();
+
         game.stop();
-startGame();
+
+        setTimeout(function () {
+
+            startGame();
+            updateGame();
+        }, 1000);
 
     }
 
@@ -265,7 +265,6 @@ function updateGame() {
             myGamePiece.update();
             game.stop();
             console.log("collision");
-            game.stopAudio()
             return;
 
         };
@@ -326,7 +325,6 @@ function updateGame() {
             });
             myGamePiece.image.src = "assets/explosion.png";
             myGamePiece.alive = false
-            game.stopAudio()
 
             myGamePiece.newPos();
             myGamePiece.update();
@@ -392,7 +390,6 @@ function updateGame() {
                 audioObj.play();
             });
             myGamePiece.alive = false
-            game.stopAudio()
 
             myGamePiece.image.src = "assets/explosion.png";
             myGamePiece.newPos();
